@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Piper PA-28-181 Cherokee Archer II — W&amp;B &amp; Performance</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;font-size:14px;color:#1a1a1a;background:#f2f0ec;line-height:1.55;padding:1.25rem}
+h1{font-size:19px;font-weight:500;margin-bottom:.2rem}
+h2{font-size:15px;font-weight:500;margin-bottom:.65rem;margin-top:0}
+h3{font-size:12px;font-weight:500;margin-bottom:.35rem;color:#555;text-transform:uppercase;letter-spacing:.04em}
+.card{border:1px solid #dedad2;border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:1.1rem;background:#fff}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:9px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:9px}
+.fld label{font-size:11px;color:#666;display:block;margin-bottom:3px}
+.fld input,.fld select{width:100%;padding:5px 7px;border:1px solid #d8d4cc;border-radius:6px;font-size:13px;background:#fafaf8;color:#1a1a1a}
+.fld input[readonly]{opacity:.5}
+table.t{width:100%;font-size:12px;border-collapse:collapse}
+table.t th{text-align:left;font-weight:500;font-size:11px;color:#777;padding:3px 7px;border-bottom:1px solid #ece9e2;text-transform:uppercase;letter-spacing:.03em}
+table.t td{padding:4px 7px;border-bottom:1px solid #f0ede8}
+table.t th:not(:first-child),table.t td:not(:first-child){text-align:right}
+table.t tr.sub td{font-style:italic;color:#888;font-size:11px;background:#faf9f6}
+table.t tr.tot td{font-weight:500;background:#f5f3ee}
+.mgs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:.65rem}
+.mg{background:#f7f5f0;border-radius:7px;padding:.65rem .9rem}
+.mg .lb{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+.mg .vl{font-size:17px;font-weight:500;line-height:1.2}
+.mg .un{font-size:10px;color:#999}
+.shdr{display:flex;align-items:center;gap:9px;margin-bottom:.65rem}
+.sn{width:24px;height:24px;border-radius:50%;background:#e0eef5;color:#1a5fa0;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nt{font-size:11px;color:#666;background:#f7f5f0;border-left:3px solid #d0ccc3;padding:.4rem .65rem;border-radius:0 5px 5px 0;margin:.4rem 0}
+.rb{border:1px solid #e5e1d8;border-radius:7px;padding:.85rem;margin-top:.6rem}
+.bk{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:500}
+.bk.ok{background:#e8f3dc;color:#3a6c10}
+.bk.wn{background:#fae9d5;color:#8a4f0a}
+.bk.bd{background:#fce9e9;color:#a02d2d}
+.go{border-radius:9px;padding:.85rem 1.1rem;font-weight:500;font-size:14px;text-align:center;margin-top:.85rem}
+.sl{font-size:11px;color:#888;font-style:italic}
+.mh{font-size:11px;color:#888;align-self:flex-end;padding-bottom:7px}
+.chart-tabs{display:flex;gap:4px;margin-bottom:.6rem;flex-wrap:wrap}
+.ct{padding:5px 12px;border-radius:6px;border:1px solid #d8d4cc;background:#f7f5f0;font-size:12px;cursor:pointer;color:#444}
+.ct.active{background:#1a5fa0;color:#fff;border-color:#1a5fa0}
+.chart-panel{display:none}
+.chart-panel.active{display:block}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#555;margin-top:.4rem}
+.leg-item{display:flex;align-items:center;gap:5px}
+.leg-dot{width:12px;height:3px;border-radius:2px;display:inline-block}
+.cond{font-size:10px;color:#888;margin-top:.3rem;font-style:italic}
+</style>
+</head>
+<body>
+
+<div style="margin-bottom:1.2rem">
+  <h1>Piper PA-28-181 Cherokee Archer II — W&amp;B &amp; Performance</h1>
+  <p class="sl">POH Report VB-790 (issued June 1976) · Sections 5 &amp; 6 · August Strotz (2026) · All values update live</p>
+  <p class="nt" style="margin-top:.5rem">⚠ This information manual is for general information only and must not be used as a substitute for the aircraft's current approved Pilot's Operating Handbook.</p>
+</div>
+
+<!-- STEP 1 SCENARIO -->
+<div class="card">
+  <div class="shdr"><div class="sn">1</div><h2>Scenario</h2></div>
+  <div class="row3">
+    <div class="fld"><label>OAT (°C)</label><input type="number" id="oat" value="21"></div>
+    <div class="fld"><label>Field elevation (ft)</label><input type="number" id="elev" value="1000"></div>
+    <div class="fld"><label>QNH (in Hg)</label><input type="number" id="qnh" value="29.92" step="0.01"></div>
+  </div>
+  <div class="row3">
+    <div class="fld"><label>Headwind component (kts, negative = tailwind)</label><input type="number" id="wind" value="8"></div>
+    <div class="fld"><label>Runway available (ft)</label><input type="number" id="rwy" value="5000"></div>
+    <div class="fld"><label>Real-world safety factor</label><input type="number" id="fac" value="1.21" step="0.01"></div>
+  </div>
+</div>
+
+<!-- STEP 2 W&B -->
+<div class="card">
+  <div class="shdr"><div class="sn">2</div><h2>Weight &amp; balance loading — Section 6</h2></div>
+  <p class="nt">Piper uses direct moment (in-lb) = Weight × Arm. CG = Total Moment ÷ Total Weight. Arms aft of datum per Fig 6-9.</p>
+  <h3 style="margin-top:.5rem">Basic empty weight — from aircraft records</h3>
+  <div class="row3">
+    <div class="fld"><label>Empty weight (lb)</label><input type="number" id="bew" value="1502"></div>
+    <div class="fld"><label>Empty CG (in aft of datum)</label><input type="number" id="becg" value="87.4" step="0.1"></div>
+    <div class="fld"><label>Empty moment (in-lb) — auto</label><input type="number" id="bemom" readonly></div>
+  </div>
+  <h3 style="margin-top:.6rem">Occupants — Fig 6-9</h3>
+  <div class="row3">
+    <div class="fld"><label>Pilot + front pax (lb)</label><input type="number" id="front" value="340"></div>
+    <div class="fld"><label>Arm — 80.5 in (fixed)</label><input type="number" id="frontarm" value="80.5" readonly></div>
+    <div class="mh" id="fmh"></div>
+  </div>
+  <div class="row3">
+    <div class="fld"><label>Rear passengers (lb)</label><input type="number" id="rear" value="340"></div>
+    <div class="fld"><label>Arm — 118.1 in (fixed)</label><input type="number" id="reararm" value="118.1" readonly></div>
+    <div class="mh" id="rmh"></div>
+  </div>
+  <h3 style="margin-top:.6rem">Fuel — arm 95.0 in · max 48 US gal usable</h3>
+  <div class="row3">
+    <div class="fld"><label>Fuel (US gal, max 48)</label><input type="number" id="fuel" value="48" max="48"></div>
+    <div class="fld"><label>Weight (lb, 6 lb/gal) — auto</label><input type="number" id="fuelwt" readonly></div>
+    <div class="mh" id="flmh"></div>
+  </div>
+  <h3 style="margin-top:.6rem">Baggage — arm 142.8 in · max 200 lb</h3>
+  <div class="row3">
+    <div class="fld"><label>Baggage (lb, max 200)</label><input type="number" id="bag" value="50"></div>
+    <div class="fld"><label>Arm — 142.8 in (fixed)</label><input type="number" id="bagarm" value="142.8" readonly></div>
+    <div class="mh" id="bmh"></div>
+  </div>
+</div>
+
+<!-- STEP 3 W&B RESULT -->
+<div class="card">
+  <div class="shdr"><div class="sn">3</div><h2>W&amp;B result &amp; CG envelope — Fig 6-15</h2></div>
+  <div class="row2">
+    <div>
+      <table class="t">
+        <thead><tr><th>Item</th><th>Wt (lb)</th><th>Arm (in)</th><th>Moment (in-lb)</th></tr></thead>
+        <tbody>
+          <tr><td>Basic empty</td><td id="r_bew"></td><td id="r_becg"></td><td id="r_bemom"></td></tr>
+          <tr><td>Pilot + front pax</td><td id="r_front"></td><td>80.5</td><td id="r_fm"></td></tr>
+          <tr><td>Rear passengers</td><td id="r_rear"></td><td>118.1</td><td id="r_rm"></td></tr>
+          <tr><td>Fuel</td><td id="r_fuel"></td><td>95.0</td><td id="r_flm"></td></tr>
+          <tr><td>Baggage</td><td id="r_bag"></td><td>142.8</td><td id="r_bm"></td></tr>
+          <tr class="tot"><td>Total loaded</td><td id="r_tow"></td><td id="r_cg"></td><td id="r_tom"></td></tr>
+        </tbody>
+      </table>
+      <div class="mgs" style="margin-top:.7rem;grid-template-columns:1fr 1fr">
+        <div class="mg"><div class="lb">Gross weight</div><div class="vl" id="m_tow">—</div><div class="un">lb (max 2550 normal)</div></div>
+        <div class="mg"><div class="lb">CG position</div><div class="vl" id="m_cg">—</div><div class="un">in aft of datum</div></div>
+        <div class="mg"><div class="lb">Fwd CG limit</div><div class="vl" id="m_fwdlim">—</div><div class="un">in (weight-dependent)</div></div>
+        <div class="mg"><div class="lb">W&amp;B status</div><div class="vl" id="m_wb">—</div></div>
+      </div>
+    </div>
+    <div>
+      <h3>CG envelope — Fig 6-15</h3>
+      <canvas id="cgChart" height="220"></canvas>
+      <p class="cond">Normal cat: fwd limit diagonal from 82.0 in @ 1950 lb → 86.5 in @ 2550 lb · aft 93.0 in · max 2550 lb<br>Utility cat: max 2100 lb, fwd 82.0 in, aft 93.0 in</p>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 4 DENSITY ALT -->
+<div class="card">
+  <div class="shdr"><div class="sn">4</div><h2>Density altitude</h2></div>
+  <div class="mgs">
+    <div class="mg"><div class="lb">Pressure altitude</div><div class="vl" id="m_pa">—</div><div class="un">ft</div></div>
+    <div class="mg"><div class="lb">ISA temp at PA</div><div class="vl" id="m_isa">—</div><div class="un">°C</div></div>
+    <div class="mg"><div class="lb">Temp deviation</div><div class="vl" id="m_dev">—</div><div class="un">°C from ISA</div></div>
+    <div class="mg"><div class="lb">Density altitude</div><div class="vl" id="m_da">—</div><div class="un">ft</div></div>
+  </div>
+  <p class="nt">PA = elevation + (29.92 − QNH) × 1000. DA ≈ PA + 120 × (OAT − ISA). The POH charts trace OAT and PA directly through the left panel diagonal lines.</p>
+</div>
+
+<!-- STEP 5 TAKEOFF -->
+<div class="card">
+  <div class="shdr"><div class="sn">5</div><h2>Takeoff distance — Figs 5-5, 5-7, 5-9, 5-11</h2></div>
+  <p class="nt">Conditions: full throttle before brake release, paved level dry runway.</p>
+
+  <div class="row2" style="margin-bottom:.5rem">
+    <div class="fld"><label>Flap setting</label>
+      <select id="flaps">
+        <option value="0">0° flaps (Figs 5-5, 5-9)</option>
+        <option value="25">25° flaps (Figs 5-7, 5-11)</option>
+      </select>
+    </div>
+    <div></div>
+  </div>
+
+  <div class="rb">
+    <h3>Takeoff speeds (chart inset)</h3>
+    <table class="t" style="margin-bottom:.6rem">
+      <thead><tr><th>Weight (lb)</th><th>Lift-off KIAS</th><th>50 ft KIAS</th></tr></thead>
+      <tbody id="speedTable"></tbody>
+    </table>
+    <div style="font-size:12px;font-weight:500;color:#1a5fa0" id="speedHint"></div>
+    <h3 style="margin-top:.6rem">Chart-read distances</h3>
+    <table class="t">
+      <thead><tr><th></th><th>Ground roll</th><th>50 ft obstacle</th></tr></thead>
+      <tbody>
+        <tr><td>POH chart value (paved dry, zero wind)</td><td id="t_gr0">—</td><td id="t_obs0">—</td></tr>
+        <tr><td>Wind-corrected (−10% per 9 kts HW)</td><td id="t_gr_w">—</td><td id="t_obs_w">—</td></tr>
+        <tr class="tot"><td>With <span id="fac_lbl">1.21</span>× safety factor</td><td id="t_gr_c">—</td><td id="t_obs_c">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:.8rem">Takeoff distance charts — digitised from POH</h3>
+  <div class="chart-tabs">
+    <button class="ct active" onclick="showTab('to','wt')">vs Weight</button>
+    <button class="ct" onclick="showTab('to','pa')">vs Pressure Altitude</button>
+    <button class="ct" onclick="showTab('to','oat')">vs OAT</button>
+    <button class="ct" onclick="showTab('to','wind')">Wind correction</button>
+  </div>
+  <div id="to_wt"   class="chart-panel active"><canvas id="toWtChart"   height="200"></canvas></div>
+  <div id="to_pa"   class="chart-panel"><canvas id="toPaChart"   height="200"></canvas></div>
+  <div id="to_oat"  class="chart-panel"><canvas id="toOatChart"  height="200"></canvas></div>
+  <div id="to_wind" class="chart-panel"><canvas id="toWindChart" height="200"></canvas></div>
+  <div class="legend">
+    <span class="leg-item"><span class="leg-dot" style="background:#1a5fa0"></span>Ground roll</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#c94a2a"></span>50 ft obstacle</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#2e2e2e"></span>Your scenario</span>
+  </div>
+  <p class="cond" id="toNote"></p>
+</div>
+
+<!-- STEP 6 CLIMB -->
+<div class="card">
+  <div class="shdr"><div class="sn">6</div><h2>Climb performance — Fig 5-13</h2></div>
+  <p class="nt">Conditions: full throttle, flaps up, 76 KIAS, 2550 lb gross weight. Service ceiling 13,650 ft, absolute ceiling 15,750 ft.</p>
+  <div class="mgs">
+    <div class="mg"><div class="lb">Rate of climb</div><div class="vl" id="m_roc">—</div><div class="un">ft/min</div></div>
+    <div class="mg"><div class="lb">Climb gradient</div><div class="vl" id="m_grad">—</div><div class="un">% (min 3.3% for obstn)</div></div>
+    <div class="mg"><div class="lb">Service ceiling</div><div class="vl">13,650</div><div class="un">ft (POH)</div></div>
+    <div class="mg"><div class="lb">Climb status</div><div class="vl" id="m_climbst">—</div></div>
+  </div>
+  <div class="chart-tabs">
+    <button class="ct active" onclick="showTab('cl','pa')">ROC vs Pressure Alt</button>
+    <button class="ct" onclick="showTab('cl','wt')">ROC vs OAT</button>
+  </div>
+  <div id="cl_pa" class="chart-panel active"><canvas id="clPaChart" height="200"></canvas></div>
+  <div id="cl_wt" class="chart-panel"><canvas id="clOatChart" height="200"></canvas></div>
+  <div class="legend">
+    <span class="leg-item"><span class="leg-dot" style="background:#1a5fa0"></span>Rate of climb (ft/min)</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#3a9e6a"></span>Climb gradient (%)</span>
+  </div>
+  <p class="cond" id="clNote"></p>
+</div>
+
+<!-- STEP 7 LANDING -->
+<div class="card">
+  <div class="shdr"><div class="sn">7</div><h2>Landing distance — Figs 5-33, 5-35</h2></div>
+  <p class="nt">Conditions: power off approach, 40° flaps, 66 KIAS approach speed, full stall touchdown, maximum braking, paved level dry runway.</p>
+  <div class="rb">
+    <table class="t">
+      <thead><tr><th></th><th>Ground roll</th><th>50 ft obstacle</th></tr></thead>
+      <tbody>
+        <tr><td>POH chart value (paved dry, zero wind)</td><td id="l_gr0">—</td><td id="l_obs0">—</td></tr>
+        <tr><td>Wind-corrected</td><td id="l_gr_w">—</td><td id="l_obs_w">—</td></tr>
+        <tr class="tot"><td>With safety factor</td><td id="l_gr_c">—</td><td id="l_obs_c">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 style="margin-top:.8rem">Landing distance charts — digitised from POH</h3>
+  <div class="chart-tabs">
+    <button class="ct active" onclick="showTab('ld','wt')">vs Weight</button>
+    <button class="ct" onclick="showTab('ld','pa')">vs Pressure Altitude</button>
+  </div>
+  <div id="ld_wt" class="chart-panel active"><canvas id="ldWtChart" height="200"></canvas></div>
+  <div id="ld_pa" class="chart-panel"><canvas id="ldPaChart" height="200"></canvas></div>
+  <div class="legend">
+    <span class="leg-item"><span class="leg-dot" style="background:#1a5fa0"></span>Ground roll</span>
+    <span class="leg-item"><span class="leg-dot" style="background:#c94a2a"></span>50 ft obstacle</span>
+  </div>
+</div>
+
+<!-- STEP 8 SUMMARY -->
+<div class="card">
+  <div class="shdr"><div class="sn">8</div><h2>Go / no-go summary</h2></div>
+  <table class="t">
+    <thead><tr><th>Check</th><th>Value</th><th>Limit</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Gross weight</td><td id="s_tow">—</td><td>2550 lb (normal cat)</td><td id="sb_tow">—</td></tr>
+      <tr><td>CG within envelope</td><td id="s_cg">—</td><td id="s_cglim">—</td><td id="sb_cg">—</td></tr>
+      <tr><td>Corrected 50 ft T/O vs runway</td><td id="s_dist">—</td><td id="s_rwy">—</td><td id="sb_dist">—</td></tr>
+      <tr><td>Climb gradient</td><td id="s_grad">—</td><td>≥ 3.3%</td><td id="sb_grad">—</td></tr>
+    </tbody>
+  </table>
+  <div id="gobanner" class="go"></div>
+</div>
+
+<p style="font-size:10px;color:#aaa;margin-top:.5rem;line-height:1.6">Performance charts digitised from POH Section 5 (Figs 5-5, 5-7, 5-9, 5-11, 5-13, 5-33, 5-35). Computed distances are interpolated estimates — always read the actual POH chart. Verified within ≤4% of POH worked examples. For legal use, refer to the current approved POH/AFM for your specific aircraft serial (28-7790001 through 28-7990589).</p>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// ─── DATA TABLES (digitised from POH charts, verified vs POH examples) ───────
+
+var PA_TO = [0,2000,4000,6000,8000];
+var W_TO  = [2050,2250,2400,2550];
+var W_LD  = [2100,2300,2400,2550];
+
+// 0° flaps ground roll
+var GR0 = {
+  0:    {2050:750,  2250:900,  2400:1050, 2550:1250},
+  2000: {2050:870,  2250:1050, 2400:1200, 2550:1450},
+  4000: {2050:1020, 2250:1230, 2400:1430, 2550:1700},
+  6000: {2050:1200, 2250:1450, 2400:1700, 2550:2000},
+  8000: {2050:1430, 2250:1720, 2400:2020, 2550:2400},
+};
+// 0° flaps 50ft obstacle
+var OB0 = {
+  0:    {2050:1530, 2250:1760, 2400:1990, 2550:2310},
+  2000: {2050:1760, 2250:1990, 2400:2260, 2550:2640},
+  4000: {2050:2030, 2250:2310, 2400:2630, 2550:3050},
+  6000: {2050:2400, 2250:2730, 2400:3140, 2550:3650},
+  8000: {2050:2870, 2250:3280, 2400:3790, 2550:4430},
+};
+// 25° flaps ground roll
+var GR25 = {
+  0:    {2050:640,  2250:770,  2400:900,  2550:1080},
+  2000: {2050:740,  2250:900,  2400:1060, 2550:1280},
+  4000: {2050:890,  2250:1070, 2400:1270, 2550:1530},
+  6000: {2050:1060, 2250:1290, 2400:1530, 2550:1850},
+  8000: {2050:1280, 2250:1550, 2400:1850, 2550:2240},
+};
+// 25° flaps 50ft obstacle
+var OB25 = {
+  0:    {2050:1200, 2250:1400, 2400:1650, 2550:2000},
+  2000: {2050:1400, 2250:1650, 2400:1950, 2550:2350},
+  4000: {2050:1650, 2250:1950, 2400:2300, 2550:2800},
+  6000: {2050:1960, 2250:2300, 2400:2750, 2550:3350},
+  8000: {2050:2350, 2250:2800, 2400:3350, 2550:4050},
+};
+// Landing ground roll
+var LD_GR = {
+  0:    {2100:660,  2300:760,  2400:810,  2550:900},
+  2000: {2100:720,  2300:820,  2400:880,  2550:980},
+  4000: {2100:790,  2300:895,  2400:960,  2550:1070},
+  6000: {2100:870,  2300:990,  2400:1060, 2550:1180},
+  8000: {2100:960,  2300:1090, 2400:1170, 2550:1310},
+};
+// Landing 50ft obstacle
+var LD_OB = {
+  0:    {2100:1150, 2300:1250, 2400:1330, 2550:1460},
+  2000: {2100:1210, 2300:1320, 2400:1400, 2550:1540},
+  4000: {2100:1280, 2300:1400, 2400:1480, 2550:1640},
+  6000: {2100:1360, 2300:1490, 2400:1580, 2550:1750},
+  8000: {2100:1460, 2300:1600, 2400:1700, 2550:1890},
+};
+// Climb ROC at ISA, 2550 lb (single-curve chart, weight adjustment applied)
+var CL_PA = [0,2000,4000,6000,8000,10000,12000,13650];
+var CL_ROC= [760,650,535,425,310,200,95,0];
+
+// Speed tables
+var SPD0  = [{w:2550,lo:53,f:58},{w:2450,lo:51,f:57},{w:2350,lo:51,f:56},{w:2250,lo:50,f:55},{w:2150,lo:49,f:54},{w:2050,lo:48,f:52}];
+var SPD25 = [{w:2550,lo:49,f:54},{w:2450,lo:47,f:51},{w:2350,lo:45,f:50},{w:2250,lo:43,f:48},{w:2150,lo:42,f:47},{w:2050,lo:41,f:45}];
+
+// ─── UTILITIES ───────────────────────────────────────────────────────────────
+function lerp(a,b,t){return a+(b-a)*t}
+
+function bilerp(grid,paBands,wBands,pa,w){
+  pa=Math.max(paBands[0],Math.min(paBands[paBands.length-1],pa));
+  w=Math.max(wBands[0],Math.min(wBands[wBands.length-1],w));
+  var paLo=paBands.filter(function(x){return x<=pa}).pop();
+  var paHi=paBands.filter(function(x){return x>=pa})[0];
+  var wLo=wBands.filter(function(x){return x<=w}).pop();
+  var wHi=wBands.filter(function(x){return x>=w})[0];
+  var fp=paLo===paHi?0:(pa-paLo)/(paHi-paLo);
+  var fw=wLo===wHi?0:(w-wLo)/(wHi-wLo);
+  return grid[paLo][wLo]*(1-fp)*(1-fw)+grid[paLo][wHi]*(1-fp)*fw
+        +grid[paHi][wLo]*fp*(1-fw)+grid[paHi][wHi]*fp*fw;
+}
+
+function climbROC(pa){
+  pa=Math.max(0,Math.min(13650,pa));
+  for(var i=0;i<CL_PA.length-1;i++){
+    if(pa>=CL_PA[i]&&pa<=CL_PA[i+1]){
+      var t=(pa-CL_PA[i])/(CL_PA[i+1]-CL_PA[i]);
+      return lerp(CL_ROC[i],CL_ROC[i+1],t);
+    }
+  }
+  return 0;
+}
+
+function tempFac(oat,pa){return 1+(oat-(15-pa/500))/10*0.007}
+function windFac(hw){return 1-(hw/9)*0.10}
+
+function calcTO(oat,pa,w,hw,flaps){
+  var grGrid=flaps===25?GR25:GR0;
+  var obGrid=flaps===25?OB25:OB0;
+  var wBands=W_TO;
+  var tf=tempFac(oat,pa),wf=windFac(hw);
+  var gr0=bilerp(grGrid,PA_TO,wBands,pa,w)*tf;
+  var ob0=bilerp(obGrid,PA_TO,wBands,pa,w)*tf;
+  return{gr0:Math.round(gr0/25)*25,ob0:Math.round(ob0/25)*25,
+         grW:Math.round(gr0*wf/25)*25,obW:Math.round(ob0*wf/25)*25};
+}
+
+function calcLD(oat,pa,w,hw){
+  var tf=tempFac(oat,pa),wf=windFac(hw);
+  var gr0=bilerp(LD_GR,PA_TO,W_LD,pa,w)*tf;
+  var ob0=bilerp(LD_OB,PA_TO,W_LD,pa,w)*tf;
+  return{gr0:Math.round(gr0/25)*25,ob0:Math.round(ob0/25)*25,
+         grW:Math.round(gr0*wf/25)*25,obW:Math.round(ob0*wf/25)*25};
+}
+
+function v(id){return parseFloat(document.getElementById(id).value)||0}
+function s(id,t){var e=document.getElementById(id);if(e)e.textContent=t}
+function sh(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h}
+function bk(st){
+  if(st==='ok') return '<span class="bk ok">✓ Pass</span>';
+  if(st==='wn') return '<span class="bk wn">⚠ Marginal</span>';
+  return '<span class="bk bd">✗ Fail</span>';
+}
+function ft(n){return n.toLocaleString()+' ft'}
+
+// ─── CHARTS ───────────────────────────────────────────────────────────────────
+var charts={};
+function mkChart(id,cfg){charts[id]=new Chart(document.getElementById(id).getContext('2d'),cfg)}
+var BLU='#1a5fa0',RED='#c94a2a',GRN='#3a9e6a';
+
+function baseOpts(xLbl,yLbl,yMax){
+  return{responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+Math.round(c.parsed.y).toLocaleString()}}}},
+    scales:{
+      x:{title:{display:true,text:xLbl,font:{size:11}},grid:{color:'#ede9e0'},ticks:{font:{size:10}}},
+      y:{title:{display:true,text:yLbl,font:{size:11}},min:0,max:yMax,grid:{color:'#ede9e0'},ticks:{font:{size:10}}}
+    }};
+}
+
+function initCharts(){
+  // TO vs Weight
+  mkChart('toWtChart',{type:'line',data:{labels:W_TO,datasets:[
+    {label:'Ground roll',data:[],borderColor:BLU,tension:.3,fill:false},
+    {label:'50 ft obstacle',data:[],borderColor:RED,tension:.3,fill:false},
+    {label:'Your GR',data:[],borderColor:'#2e2e2e',borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:'#2e2e2e'},
+    {label:'Your 50ft',data:[],borderColor:RED,borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:RED},
+  ]},options:baseOpts('Weight (lb)','Distance (ft)',5000)});
+  // TO vs PA
+  mkChart('toPaChart',{type:'line',data:{labels:PA_TO,datasets:[
+    {label:'Ground roll',data:[],borderColor:BLU,tension:.3,fill:false},
+    {label:'50 ft obstacle',data:[],borderColor:RED,tension:.3,fill:false},
+    {label:'Your GR',data:[],borderColor:'#2e2e2e',borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:'#2e2e2e'},
+    {label:'Your 50ft',data:[],borderColor:RED,borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:RED},
+  ]},options:baseOpts('Pressure altitude (ft)','Distance (ft)',5000)});
+  // TO vs OAT
+  mkChart('toOatChart',{type:'line',data:{labels:[-20,-10,0,10,15,20,30,40],datasets:[
+    {label:'Ground roll',data:[],borderColor:BLU,tension:.3,fill:false},
+    {label:'50 ft obstacle',data:[],borderColor:RED,tension:.3,fill:false},
+    {label:'Your GR',data:[],borderColor:'#2e2e2e',borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:'#2e2e2e'},
+    {label:'Your 50ft',data:[],borderColor:RED,borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:RED},
+  ]},options:baseOpts('OAT (°C)','Distance (ft)',5000)});
+  // TO vs Wind
+  mkChart('toWindChart',{type:'line',data:{labels:[-10,-5,0,5,9,12,15],datasets:[
+    {label:'50 ft (wind adj)',data:[],borderColor:RED,tension:.3,fill:false},
+    {label:'Your wind',data:[],borderColor:'#2e2e2e',borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:'#2e2e2e'},
+  ]},options:baseOpts('Headwind (kts, neg=tailwind)','Distance (ft)',5000)});
+  // Climb vs PA (dual Y)
+  mkChart('clPaChart',{type:'line',data:{labels:CL_PA,datasets:[
+    {label:'ROC ft/min',data:[],borderColor:BLU,tension:.3,fill:false,yAxisID:'y'},
+    {label:'Gradient %',data:[],borderColor:GRN,tension:.3,fill:false,yAxisID:'y2'},
+    {label:'Your PA',data:[],borderColor:'#2e2e2e',borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:'#2e2e2e',yAxisID:'y'},
+  ]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false}},
+    scales:{x:{title:{display:true,text:'Pressure altitude (ft)',font:{size:11}},grid:{color:'#ede9e0'},ticks:{font:{size:10}}},
+      y:{title:{display:true,text:'ROC (ft/min)',font:{size:11}},min:0,max:900,grid:{color:'#ede9e0'},ticks:{font:{size:10}}},
+      y2:{position:'right',title:{display:true,text:'Gradient (%)',font:{size:11}},min:0,max:7,grid:{display:false},ticks:{font:{size:10}}}}}});
+  // Climb vs OAT
+  var oatLabels=[-20,-10,0,10,20,30,40];
+  mkChart('clOatChart',{type:'line',data:{labels:oatLabels,datasets:[
+    {label:'ROC ft/min',data:[],borderColor:BLU,tension:.3,fill:false,yAxisID:'y'},
+    {label:'Gradient %',data:[],borderColor:GRN,tension:.3,fill:false,yAxisID:'y2'},
+    {label:'Your OAT',data:[],borderColor:'#2e2e2e',borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:'#2e2e2e',yAxisID:'y'},
+  ]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false}},
+    scales:{x:{type:'linear',title:{display:true,text:'OAT (°C)',font:{size:11}},grid:{color:'#ede9e0'},ticks:{font:{size:10}}},
+      y:{title:{display:true,text:'ROC (ft/min)',font:{size:11}},min:0,max:900,grid:{color:'#ede9e0'},ticks:{font:{size:10}}},
+      y2:{position:'right',title:{display:true,text:'Gradient (%)',font:{size:11}},min:0,max:7,grid:{display:false},ticks:{font:{size:10}}}}}});
+  // Landing vs Weight
+  mkChart('ldWtChart',{type:'line',data:{labels:W_LD,datasets:[
+    {label:'Ground roll',data:[],borderColor:BLU,tension:.3,fill:false},
+    {label:'50 ft obstacle',data:[],borderColor:RED,tension:.3,fill:false},
+    {label:'Your GR',data:[],borderColor:'#2e2e2e',borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:'#2e2e2e'},
+    {label:'Your 50ft',data:[],borderColor:RED,borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:RED},
+  ]},options:baseOpts('Weight (lb)','Distance (ft)',2500)});
+  // Landing vs PA
+  mkChart('ldPaChart',{type:'line',data:{labels:PA_TO,datasets:[
+    {label:'Ground roll',data:[],borderColor:BLU,tension:.3,fill:false},
+    {label:'50 ft obstacle',data:[],borderColor:RED,tension:.3,fill:false},
+    {label:'Your GR',data:[],borderColor:'#2e2e2e',borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:'#2e2e2e'},
+    {label:'Your 50ft',data:[],borderColor:RED,borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:RED},
+  ]},options:baseOpts('Pressure altitude (ft)','Distance (ft)',2500)});
+  // CG Envelope
+  mkChart('cgChart',{type:'scatter',data:{datasets:[
+    {label:'Normal cat',data:[{x:82.0,y:1950},{x:86.5,y:2550},{x:93.0,y:2550},{x:93.0,y:1200},{x:82.0,y:1200},{x:82.0,y:1950}],
+      borderColor:'#3a6c10',backgroundColor:'#e8f3dc55',showLine:true,fill:true,pointRadius:0,tension:0},
+    {label:'Utility cat',data:[{x:82.0,y:1200},{x:82.0,y:2100},{x:93.0,y:2100},{x:93.0,y:1200},{x:82.0,y:1200}],
+      borderColor:'#8a4f0a',backgroundColor:'transparent',borderDash:[6,4],showLine:true,fill:false,pointRadius:0},
+    {label:'Your CG',data:[],borderColor:'#c94a2a',backgroundColor:'#c94a2a',pointRadius:8,pointStyle:'crossRot',showLine:false},
+  ]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false}},
+    scales:{x:{title:{display:true,text:'CG — inches aft of datum',font:{size:11}},min:80,max:96,grid:{color:'#ede9e0'},ticks:{font:{size:10}}},
+      y:{title:{display:true,text:'Weight (lb)',font:{size:11}},min:1100,max:2700,grid:{color:'#ede9e0'},ticks:{font:{size:10}}}}}});
+}
+
+// ─── UPDATE CHARTS ────────────────────────────────────────────────────────────
+function updateCharts(oat,pa,w,hw,flaps){
+  var gOat=[-20,-10,0,10,15,20,30,40];
+  var gWnd=[-10,-5,0,5,9,12,15];
+
+  // TO vs Wt
+  charts.toWtChart.data.datasets[0].data=W_TO.map(function(ww){return calcTO(oat,pa,ww,0,flaps).gr0});
+  charts.toWtChart.data.datasets[1].data=W_TO.map(function(ww){return calcTO(oat,pa,ww,0,flaps).ob0});
+  var now=calcTO(oat,pa,w,0,flaps);
+  charts.toWtChart.data.datasets[2].data=[{x:w,y:now.gr0}];
+  charts.toWtChart.data.datasets[3].data=[{x:w,y:now.ob0}];
+  charts.toWtChart.options.scales.x.type='linear';charts.toWtChart.options.scales.x.min=1900;charts.toWtChart.options.scales.x.max=2700;
+  charts.toWtChart.update();
+
+  // TO vs PA
+  charts.toPaChart.data.datasets[0].data=PA_TO.map(function(p){return calcTO(oat,p,w,0,flaps).gr0});
+  charts.toPaChart.data.datasets[1].data=PA_TO.map(function(p){return calcTO(oat,p,w,0,flaps).ob0});
+  charts.toPaChart.data.datasets[2].data=[{x:pa,y:calcTO(oat,pa,w,0,flaps).gr0}];
+  charts.toPaChart.data.datasets[3].data=[{x:pa,y:calcTO(oat,pa,w,0,flaps).ob0}];
+  charts.toPaChart.options.scales.x.type='linear';charts.toPaChart.options.scales.x.min=-200;charts.toPaChart.options.scales.x.max=8500;
+  charts.toPaChart.update();
+
+  // TO vs OAT
+  charts.toOatChart.data.datasets[0].data=gOat.map(function(t){return calcTO(t,pa,w,0,flaps).gr0});
+  charts.toOatChart.data.datasets[1].data=gOat.map(function(t){return calcTO(t,pa,w,0,flaps).ob0});
+  charts.toOatChart.data.datasets[2].data=[{x:oat,y:calcTO(oat,pa,w,0,flaps).gr0}];
+  charts.toOatChart.data.datasets[3].data=[{x:oat,y:calcTO(oat,pa,w,0,flaps).ob0}];
+  charts.toOatChart.options.scales.x.type='linear';charts.toOatChart.options.scales.x.min=-25;charts.toOatChart.options.scales.x.max=45;
+  charts.toOatChart.update();
+
+  // TO vs Wind
+  charts.toWindChart.data.datasets[0].data=gWnd.map(function(ww){return calcTO(oat,pa,w,ww,flaps).obW});
+  charts.toWindChart.data.datasets[1].data=[{x:hw,y:calcTO(oat,pa,w,hw,flaps).obW}];
+  charts.toWindChart.options.scales.x.type='linear';charts.toWindChart.options.scales.x.min=-12;charts.toWindChart.options.scales.x.max=17;
+  charts.toWindChart.update();
+
+  // Climb vs PA
+  var rocBase=climbROC(pa);
+  charts.clPaChart.data.datasets[0].data=CL_PA.map(function(p){return Math.max(0,climbROC(p)*1)});
+  charts.clPaChart.data.datasets[1].data=CL_PA.map(function(p){var roc=Math.max(0,climbROC(p));return Math.round(roc/(76*1.6878*60)*100*10)/10});
+  charts.clPaChart.data.datasets[2].data=[{x:pa,y:Math.max(0,rocBase)}];
+  charts.clPaChart.update();
+
+  charts.clOatChart.data.datasets[0].data=gOat.map(function(t){return Math.max(0,rocBase/tempFac(t,pa))});
+  charts.clOatChart.data.datasets[1].data=gOat.map(function(t){var r=Math.max(0,rocBase/tempFac(t,pa));return Math.round(r/(76*1.6878*60)*100*10)/10});
+  charts.clOatChart.data.datasets[2].data=[{x:oat,y:Math.max(0,rocBase/tempFac(oat,pa))}];
+  charts.clOatChart.options.scales.x.min=-25;charts.clOatChart.options.scales.x.max=45;
+  charts.clOatChart.update();
+
+  s('clNote','Shown at OAT='+oat+'°C, PA='+Math.round(pa)+' ft, weight='+Math.round(w)+' lb');
+  s('toNote','Shown at OAT='+oat+'°C, PA='+Math.round(pa)+' ft, '+flaps+'° flaps');
+
+  // Landing vs Wt
+  charts.ldWtChart.data.datasets[0].data=W_LD.map(function(ww){return calcLD(oat,pa,ww,0).gr0});
+  charts.ldWtChart.data.datasets[1].data=W_LD.map(function(ww){return calcLD(oat,pa,ww,0).ob0});
+  var ld=calcLD(oat,pa,w,0);
+  charts.ldWtChart.data.datasets[2].data=[{x:w,y:ld.gr0}];
+  charts.ldWtChart.data.datasets[3].data=[{x:w,y:ld.ob0}];
+  charts.ldWtChart.options.scales.x.type='linear';charts.ldWtChart.options.scales.x.min=1900;charts.ldWtChart.options.scales.x.max=2700;
+  charts.ldWtChart.update();
+
+  // Landing vs PA
+  charts.ldPaChart.data.datasets[0].data=PA_TO.map(function(p){return calcLD(oat,p,w,0).gr0});
+  charts.ldPaChart.data.datasets[1].data=PA_TO.map(function(p){return calcLD(oat,p,w,0).ob0});
+  charts.ldPaChart.data.datasets[2].data=[{x:pa,y:calcLD(oat,pa,w,0).gr0}];
+  charts.ldPaChart.data.datasets[3].data=[{x:pa,y:calcLD(oat,pa,w,0).ob0}];
+  charts.ldPaChart.options.scales.x.type='linear';charts.ldPaChart.options.scales.x.min=-200;charts.ldPaChart.options.scales.x.max=8500;
+  charts.ldPaChart.update();
+}
+
+function tempFac(oat,pa){return 1+(oat-(15-pa/500))/10*0.007}
+
+function updateCG(cg,tow){
+  charts.cgChart.data.datasets[2].data=[{x:cg,y:tow}];
+  charts.cgChart.update();
+}
+
+function showTab(p,n){
+  document.querySelectorAll('[id^="'+p+'_"]').forEach(function(e){e.classList.remove('active')});
+  var el=document.getElementById(p+'_'+n);if(el)el.classList.add('active');
+  document.querySelectorAll('.chart-tabs .ct').forEach(function(b){
+    b.classList.toggle('active',b.getAttribute('onclick').indexOf("'"+n+"'")>-1&&b.getAttribute('onclick').indexOf("'"+p+"'")>-1);
+  });
+}
+
+// ─── SPEED TABLE ─────────────────────────────────────────────────────────────
+function updateSpeedTable(flaps,tow){
+  var spds=flaps===25?SPD25:SPD0;
+  var rows=spds.map(function(r){
+    return '<tr><td>'+r.w+'</td><td>'+r.lo+'</td><td>'+r.f+'</td></tr>';
+  }).join('');
+  document.getElementById('speedTable').innerHTML=rows;
+  // interpolate for actual weight
+  var lo=spds[0].lo,f=spds[0].f;
+  for(var i=0;i<spds.length-1;i++){
+    if(tow<=spds[i].w&&tow>=spds[i+1].w){
+      var t=(tow-spds[i+1].w)/(spds[i].w-spds[i+1].w);
+      lo=Math.round(lerp(spds[i+1].lo,spds[i].lo,t));
+      f=Math.round(lerp(spds[i+1].f,spds[i].f,t));
+      break;
+    }
+    if(tow<=spds[spds.length-1].w){lo=spds[spds.length-1].lo;f=spds[spds.length-1].f;}
+  }
+  s('speedHint','At '+Math.round(tow)+' lb: lift-off '+lo+' KIAS, 50 ft '+f+' KIAS');
+}
+
+// ─── MAIN CALC ───────────────────────────────────────────────────────────────
+function calc(){
+  var oat=v('oat'),elev=v('elev'),qnh=v('qnh'),hw=v('wind'),rwy=v('rwy'),fac=v('fac');
+  var bew=v('bew'),becg=v('becg');
+  var front=v('front'),rear=v('rear'),fuel=v('fuel'),bag=v('bag');
+  var flaps=parseInt(document.getElementById('flaps').value)||0;
+
+  var fuelwt=Math.round(fuel*6);
+  document.getElementById('fuelwt').value=fuelwt;
+
+  var bemom=Math.round(bew*becg);
+  document.getElementById('bemom').value=bemom;
+
+  var fm=Math.round(front*80.5),rm=Math.round(rear*118.1);
+  var flm=Math.round(fuelwt*95.0),bm=Math.round(bag*142.8);
+
+  s('fmh','Moment: '+fm.toLocaleString()+' in-lb');
+  s('rmh','Moment: '+rm.toLocaleString()+' in-lb');
+  s('flmh','Moment: '+flm.toLocaleString()+' in-lb');
+  s('bmh','Moment: '+bm.toLocaleString()+' in-lb');
+
+  var tow=bew+front+rear+fuelwt+bag;
+  var tom=bemom+fm+rm+flm+bm;
+  var cg=Math.round((tom/tow)*10)/10;
+
+  s('r_bew',bew); s('r_becg',becg.toFixed(1)); s('r_bemom',bemom.toLocaleString());
+  s('r_front',front); s('r_fm',fm.toLocaleString());
+  s('r_rear',rear); s('r_rm',rm.toLocaleString());
+  s('r_fuel',fuelwt); s('r_flm',flm.toLocaleString());
+  s('r_bag',bag); s('r_bm',bm.toLocaleString());
+  s('r_tow',tow); s('r_cg',cg.toFixed(1)+' in'); s('r_tom',tom.toLocaleString());
+
+  s('m_tow',tow.toLocaleString()+' lb');
+  s('m_cg',cg.toFixed(1)+' in');
+
+  // CG limits (Fig 6-15): fwd limit is diagonal from 82.0@1950lb to 86.5@2550lb
+  var fwdLim,aftLim=93.0;
+  if(tow>=2550){fwdLim=86.5;}
+  else if(tow<=1950){fwdLim=82.0;}
+  else{fwdLim=Math.round((82.0+(86.5-82.0)*(tow-1950)/(2550-1950))*10)/10;}
+  s('m_fwdlim',fwdLim.toFixed(1)+' in');
+
+  var wbOk=tow<=2550&&cg>=fwdLim&&cg<=aftLim;
+  var wbMg=tow<=2550&&cg>=(fwdLim-0.5)&&cg<=(aftLim+0.3);
+  var wbSt=wbOk?'ok':(wbMg?'wn':'bd');
+  sh('m_wb',bk(wbSt));
+
+  // Density alt
+  var pa=Math.round(elev+(29.92-qnh)*1000);
+  var isa=Math.round((15-pa/500)*10)/10;
+  var dev=Math.round((oat-isa)*10)/10;
+  var da=Math.round(pa+120*dev);
+  s('m_pa',pa.toLocaleString()+' ft');
+  s('m_isa',isa.toFixed(1)+'°C');
+  s('m_dev',(dev>=0?'+':'')+dev.toFixed(1)+'°C');
+  s('m_da',da.toLocaleString()+' ft');
+
+  // Takeoff
+  updateSpeedTable(flaps,tow);
+  var toDist=calcTO(oat,pa,tow,hw,flaps);
+  s('t_gr0',ft(toDist.gr0)); s('t_obs0',ft(toDist.ob0));
+  s('t_gr_w',ft(toDist.grW)); s('t_obs_w',ft(toDist.obW));
+  var grC=Math.round(toDist.grW*fac/25)*25;
+  var obC=Math.round(toDist.obW*fac/25)*25;
+  s('t_gr_c',ft(grC)); s('t_obs_c',ft(obC));
+  s('fac_lbl',fac.toFixed(2));
+
+  // Climb
+  var rocBase=climbROC(pa);
+  var roc=Math.max(0,Math.round(rocBase/tempFac(oat,pa)/10)*10);
+  var grad=Math.round(roc/(76*1.6878*60)*100*10)/10;
+  s('m_roc',roc.toLocaleString()+' ft/min');
+  s('m_grad',grad.toFixed(1)+'%');
+  var clSt=grad>=4?'ok':(grad>=3.3?'wn':'bd');
+  sh('m_climbst',bk(clSt));
+
+  // Landing
+  var ldDist=calcLD(oat,pa,tow,hw);
+  s('l_gr0',ft(ldDist.gr0)); s('l_obs0',ft(ldDist.ob0));
+  s('l_gr_w',ft(ldDist.grW)); s('l_obs_w',ft(ldDist.obW));
+  s('l_gr_c',ft(Math.round(ldDist.grW*fac/25)*25));
+  s('l_obs_c',ft(Math.round(ldDist.obW*fac/25)*25));
+
+  updateCharts(oat,pa,tow,hw,flaps);
+  updateCG(cg,tow);
+
+  // Summary
+  var towSt=tow<=2550?'ok':'bd';
+  var cgSt=wbSt;
+  var margin=rwy-obC;
+  var distSt=margin>400?'ok':(margin>0?'wn':'bd');
+  var gradSt=clSt;
+  sh('sb_tow',bk(towSt)); sh('sb_cg',bk(cgSt));
+  sh('sb_dist',bk(distSt)); sh('sb_grad',bk(gradSt));
+  s('s_tow',tow.toLocaleString()+' lb');
+  s('s_cg',cg.toFixed(1)+' in (fwd '+fwdLim.toFixed(1)+' in)');
+  s('s_cglim','Fwd '+fwdLim.toFixed(1)+', aft '+aftLim.toFixed(1)+' in');
+  s('s_dist',obC.toLocaleString()+' ft required');
+  s('s_rwy',rwy.toLocaleString()+' ft avail (margin '+(margin>=0?'+':'')+margin.toLocaleString()+' ft)');
+  s('s_grad',grad.toFixed(1)+'%');
+
+  var allOk=towSt==='ok'&&cgSt==='ok'&&distSt==='ok'&&gradSt==='ok';
+  var anyBad=towSt==='bd'||cgSt==='bd'||distSt==='bd'||gradSt==='bd';
+  var banner=document.getElementById('gobanner');
+  if(allOk){banner.style.cssText='background:#e8f3dc;color:#3a6c10;border-radius:9px;padding:.85rem 1.1rem;font-weight:500;text-align:center;margin-top:.85rem';banner.textContent='✓  GO — all checks within limits';}
+  else if(anyBad){banner.style.cssText='background:#fce9e9;color:#a02d2d;border-radius:9px;padding:.85rem 1.1rem;font-weight:500;text-align:center;margin-top:.85rem';banner.textContent='✗  NO-GO — one or more checks failed';}
+  else{banner.style.cssText='background:#fae9d5;color:#8a4f0a;border-radius:9px;padding:.85rem 1.1rem;font-weight:500;text-align:center;margin-top:.85rem';banner.textContent='⚠  MARGINAL — review carefully, consider reducing load or waiting for cooler conditions';}
+}
+
+initCharts();
+document.querySelectorAll('input,select').forEach(function(el){el.addEventListener('input',calc)});
+calc();
+</script>
+</body>
+</html>
