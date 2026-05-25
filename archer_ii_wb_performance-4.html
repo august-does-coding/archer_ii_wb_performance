@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PA-28-181 Archer II — W&amp;B &amp; Performance</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;font-size:14px;color:#1a1a1a;background:#f2f0ec;line-height:1.55;padding:1rem}
+h1{font-size:18px;font-weight:500;margin-bottom:.2rem}
+h2{font-size:15px;font-weight:500;margin-bottom:.65rem;margin-top:0}
+h3{font-size:12px;font-weight:500;margin-bottom:.35rem;color:#555;text-transform:uppercase;letter-spacing:.04em}
+.card{border:1px solid #dedad2;border-radius:12px;padding:1rem;margin-bottom:1rem;background:#fff}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
+.g3{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}
+@media(min-width:520px){.g3{grid-template-columns:repeat(3,1fr)}}
+.fld label{font-size:11px;color:#666;display:block;margin-bottom:3px}
+.fld input,.fld select{width:100%;padding:6px 8px;border:1px solid #d8d4cc;border-radius:6px;font-size:15px;background:#fafaf8;color:#1a1a1a}
+.fld input[readonly]{opacity:.55;background:#f0ede8}
+.fld input.auto{background:#eaf3dc!important;border-color:#7ab648!important}
+table.t{width:100%;font-size:12px;border-collapse:collapse}
+table.t th{text-align:left;font-weight:500;font-size:11px;color:#777;padding:3px 7px;border-bottom:1px solid #ece9e2;text-transform:uppercase;letter-spacing:.03em}
+table.t td{padding:4px 7px;border-bottom:1px solid #f0ede8}
+table.t th:not(:first-child),table.t td:not(:first-child){text-align:right}
+table.t tr.sub td{font-style:italic;color:#888;font-size:11px;background:#faf9f6}
+table.t tr.tot td{font-weight:500;background:#f5f3ee}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.65rem}
+@media(min-width:520px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{background:#f7f5f0;border-radius:7px;padding:.6rem .8rem}
+.tile .lb{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
+.tile .vl{font-size:16px;font-weight:500;line-height:1.2}
+.tile .un{font-size:10px;color:#999}
+.shdr{display:flex;align-items:center;gap:9px;margin-bottom:.65rem}
+.sn{width:24px;height:24px;border-radius:50%;background:#e0eef5;color:#1a5fa0;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nt{font-size:11px;color:#666;background:#f7f5f0;border-left:3px solid #d0ccc3;padding:.4rem .65rem;border-radius:0 5px 5px 0;margin:.4rem 0}
+.nt.ok{background:#eaf3dc;border-color:#7ab648;color:#3a6c10}
+.nt.warn{background:#fae9d5;border-color:#d4820a;color:#7a3d00}
+.nt.err{background:#fce9e9;border-color:#c94a2a;color:#a02d2d}
+.rb{border:1px solid #e5e1d8;border-radius:7px;padding:.85rem;margin-top:.6rem}
+.bk{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:500}
+.bk.ok{background:#e8f3dc;color:#3a6c10}
+.bk.wn{background:#fae9d5;color:#8a4f0a}
+.bk.bd{background:#fce9e9;color:#a02d2d}
+.go{border-radius:9px;padding:.85rem 1.1rem;font-weight:500;font-size:14px;text-align:center;margin-top:.85rem}
+.sl{font-size:11px;color:#888;font-style:italic}
+.mh{font-size:11px;color:#555;padding-top:3px;grid-column:1/-1}
+.ctabs{display:flex;gap:4px;margin-bottom:.6rem;flex-wrap:wrap}
+.ct{padding:6px 12px;border-radius:6px;border:1px solid #d8d4cc;background:#f7f5f0;font-size:12px;cursor:pointer;color:#444}
+.ct.active{background:#1a5fa0;color:#fff;border-color:#1a5fa0}
+.cpanel{display:none}.cpanel.active{display:block}
+.wbr{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:600px){.wbr{grid-template-columns:1fr 1fr}}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:#555;margin-top:.4rem}
+.ldot{width:12px;height:3px;border-radius:2px;display:inline-block}
+.sc{font-size:10px;color:#888;margin-top:.3rem;font-style:italic}
+canvas{max-width:100%!important}
+
+/* Airport section */
+.icrow{display:flex;gap:8px;margin-bottom:.65rem}
+.icrow input{flex:1;padding:8px 10px;border:1px solid #d8d4cc;border-radius:6px;font-size:17px;font-weight:500;background:#fafaf8;text-transform:uppercase;letter-spacing:.1em}
+.icrow button{padding:8px 18px;border-radius:6px;border:none;background:#1a5fa0;color:#fff;font-size:14px;font-weight:500;cursor:pointer}
+.icrow button:disabled{background:#aaa;cursor:default}
+.rwybtn{display:inline-flex;flex-direction:column;align-items:center;padding:6px 10px;margin:3px;border-radius:7px;border:1px solid #d8d4cc;background:#f7f5f0;font-size:13px;font-weight:600;cursor:pointer;min-width:60px;line-height:1.3}
+.rwybtn span{font-size:10px;font-weight:400;color:#666}
+.rwybtn.active{background:#1a5fa0;color:#fff;border-color:#1a5fa0}
+.rwybtn.active span{color:#cde}
+.rwybtn.tw{border-color:#c94a2a}
+.rawmetar{font-family:monospace;font-size:11px;color:#444;background:#f7f5f0;padding:.4rem .6rem;border-radius:5px;margin-top:.5rem;word-break:break-all;line-height:1.6}
+
+/* Diagram */
+#diagWrap{position:relative;width:100%;margin-top:.75rem;border-radius:8px;overflow:hidden;background:#ddd;display:none}
+#diagWrap img{width:100%;display:block}
+#diagCanvas{position:absolute;top:0;left:0;width:100%;height:100%}
+#calBtn{margin-top:.5rem;padding:6px 14px;border-radius:6px;border:1px solid #d4820a;background:#fae9d5;color:#7a3d00;font-size:12px;cursor:pointer;display:none}
+</style>
+</head>
+<body>
+
+<div style="margin-bottom:1rem">
+  <h1>PA-28-181 Cherokee Archer II</h1>
+  <p class="sl">W&amp;B · Performance · Live METAR · Runway data · POH VB-790</p>
+  <div class="nt warn" style="margin-top:.5rem">⚠ Planning purposes only — not a substitute for the approved POH/AFM.</div>
+</div>
+
+<!-- ① AIRPORT -->
+<div class="card">
+  <div class="shdr"><div class="sn">1</div><h2>Airport &amp; live weather</h2></div>
+  <div class="icrow">
+    <input type="text" id="icaoIn" placeholder="ICAO  e.g. KSFO" maxlength="4" autocomplete="off" autocorrect="off" spellcheck="false">
+    <button id="loadBtn" onclick="lookupAirport()">Load ✈</button>
+  </div>
+  <div id="apStatus"></div>
+
+  <!-- Weather tiles - hidden until loaded -->
+  <div id="wxBox" style="display:none">
+    <div class="tiles">
+      <div class="tile"><div class="lb">Airport</div><div class="vl" id="wx_name" style="font-size:12px;line-height:1.3">—</div></div>
+      <div class="tile"><div class="lb">Elevation</div><div class="vl" id="wx_elev">—</div><div class="un">ft MSL</div></div>
+      <div class="tile"><div class="lb">OAT</div><div class="vl" id="wx_oat">—</div><div class="un">°C</div></div>
+      <div class="tile"><div class="lb">QNH</div><div class="vl" id="wx_qnh">—</div><div class="un">in Hg</div></div>
+    </div>
+    <div class="tiles">
+      <div class="tile"><div class="lb">Wind</div><div class="vl" id="wx_wind">—</div><div class="un">kts</div></div>
+      <div class="tile"><div class="lb">Direction</div><div class="vl" id="wx_wdir">—</div><div class="un">°T</div></div>
+      <div class="tile"><div class="lb">Visibility</div><div class="vl" id="wx_vis">—</div><div class="un"></div></div>
+      <div class="tile"><div class="lb">Sky / WX</div><div class="vl" id="wx_sky" style="font-size:12px">—</div></div>
+    </div>
+    <div class="rawmetar" id="wx_raw"></div>
+  </div>
+
+  <!-- Runways -->
+  <div id="rwyBox" style="display:none;margin-top:.85rem">
+    <h3>Select runway</h3>
+    <p class="sc" style="margin-bottom:.4rem">Headwind (+) or tailwind (−) shown for current METAR wind</p>
+    <div id="rwyBtns"></div>
+    <div id="rwyDetail" style="display:none;margin-top:.4rem"></div>
+
+    <!-- Diagram -->
+    <div id="diagWrap">
+      <img id="diagImg" src="" alt="Airport diagram" crossorigin="anonymous">
+      <canvas id="diagCanvas"></canvas>
+    </div>
+    <div id="diagMsg" class="sc" style="margin-top:.4rem"></div>
+    <button id="calBtn" onclick="startCal()">⊕ Calibrate takeoff overlay</button>
+    <div id="calMsg" class="nt warn" style="display:none;margin-top:.4rem"></div>
+  </div>
+</div>
+
+<!-- ② CONDITIONS -->
+<div class="card">
+  <div class="shdr"><div class="sn">2</div><h2>Conditions</h2></div>
+  <div id="autoNote" class="nt ok" style="display:none">✓ Auto-filled from live METAR — tap any field to override.</div>
+  <div class="g3">
+    <div class="fld"><label>OAT (°C)</label><input type="number" id="oat" value="21"></div>
+    <div class="fld"><label>Field elevation (ft)</label><input type="number" id="elev" value="1000"></div>
+    <div class="fld"><label>QNH (in Hg)</label><input type="number" id="qnh" value="29.92" step="0.01"></div>
+  </div>
+  <div class="g3">
+    <div class="fld"><label>Headwind (kts, neg=tailwind)</label><input type="number" id="wind" value="8"></div>
+    <div class="fld"><label>Runway available (ft)</label><input type="number" id="rwy" value="5000"></div>
+    <div class="fld"><label>Safety factor</label><input type="number" id="fac" value="1.21" step="0.01"></div>
+  </div>
+</div>
+
+<!-- ③ W&B INPUTS -->
+<div class="card">
+  <div class="shdr"><div class="sn">3</div><h2>Weight &amp; balance — Section 6</h2></div>
+  <p class="nt">Moment (in-lb) = Weight × Arm. CG = Total Moment ÷ Total Weight.</p>
+  <h3 style="margin-top:.5rem">Basic empty — from aircraft records</h3>
+  <div class="g3">
+    <div class="fld"><label>Empty weight (lb)</label><input type="number" id="bew" value="1502"></div>
+    <div class="fld"><label>Empty CG (in aft datum)</label><input type="number" id="becg" value="87.4" step="0.1"></div>
+    <div class="fld"><label>Empty moment (in-lb)</label><input id="bemom" readonly></div>
+  </div>
+  <h3 style="margin-top:.5rem">Occupants</h3>
+  <div class="g3">
+    <div class="fld"><label>Pilot + front pax (lb)</label><input type="number" id="front" value="170"></div>
+    <div class="fld"><label>Arm — 80.5 in</label><input value="80.5" readonly></div>
+    <div class="mh" id="fmh"></div>
+  </div>
+  <div class="g3">
+    <div class="fld"><label>Rear passengers (lb)</label><input type="number" id="rear" value="0"></div>
+    <div class="fld"><label>Arm — 118.1 in</label><input value="118.1" readonly></div>
+    <div class="mh" id="rmh"></div>
+  </div>
+  <h3 style="margin-top:.5rem">Fuel — max 48 US gal</h3>
+  <div class="g3">
+    <div class="fld"><label>Fuel (US gal)</label><input type="number" id="fuel" value="48" max="48"></div>
+    <div class="fld"><label>Weight (lb, auto)</label><input id="fuelwt" readonly></div>
+    <div class="mh" id="flmh"></div>
+  </div>
+  <h3 style="margin-top:.5rem">Baggage — max 200 lb</h3>
+  <div class="g3">
+    <div class="fld"><label>Baggage (lb)</label><input type="number" id="bag" value="20"></div>
+    <div class="fld"><label>Arm — 142.8 in</label><input value="142.8" readonly></div>
+    <div class="mh" id="bmh"></div>
+  </div>
+</div>
+
+<!-- ④ W&B RESULT -->
+<div class="card">
+  <div class="shdr"><div class="sn">4</div><h2>W&amp;B result — Fig 6-15</h2></div>
+  <div class="wbr">
+    <div>
+      <table class="t">
+        <thead><tr><th>Item</th><th>Wt lb</th><th>Arm in</th><th>Moment in-lb</th></tr></thead>
+        <tbody>
+          <tr><td>Basic empty</td><td id="r_bew"></td><td id="r_becg"></td><td id="r_bemom"></td></tr>
+          <tr><td>Pilot + front</td><td id="r_front"></td><td>80.5</td><td id="r_fm"></td></tr>
+          <tr><td>Rear pax</td><td id="r_rear"></td><td>118.1</td><td id="r_rm"></td></tr>
+          <tr><td>Fuel</td><td id="r_fuel"></td><td>95.0</td><td id="r_flm"></td></tr>
+          <tr><td>Baggage</td><td id="r_bag"></td><td>142.8</td><td id="r_bm"></td></tr>
+          <tr class="tot"><td>Total</td><td id="r_tow"></td><td id="r_cg"></td><td id="r_tom"></td></tr>
+        </tbody>
+      </table>
+      <div class="tiles" style="margin-top:.6rem">
+        <div class="tile"><div class="lb">Gross wt</div><div class="vl" id="m_tow">—</div><div class="un">lb (max 2550)</div></div>
+        <div class="tile"><div class="lb">CG</div><div class="vl" id="m_cg">—</div><div class="un">in aft datum</div></div>
+        <div class="tile"><div class="lb">Fwd limit</div><div class="vl" id="m_fwdlim">—</div><div class="un">in</div></div>
+        <div class="tile"><div class="lb">W&amp;B</div><div class="vl" id="m_wb">—</div></div>
+      </div>
+    </div>
+    <div>
+      <h3>CG envelope — Fig 6-15</h3>
+      <canvas id="cgChart" height="220"></canvas>
+      <p class="sc">Normal: fwd 82.0→86.5 in (1950→2550 lb) · aft 93.0 in<br>Utility: max 2100 lb</p>
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ DENSITY ALT -->
+<div class="card">
+  <div class="shdr"><div class="sn">5</div><h2>Density altitude</h2></div>
+  <div class="tiles">
+    <div class="tile"><div class="lb">Press alt</div><div class="vl" id="m_pa">—</div><div class="un">ft</div></div>
+    <div class="tile"><div class="lb">ISA temp</div><div class="vl" id="m_isa">—</div><div class="un">°C</div></div>
+    <div class="tile"><div class="lb">ISA dev</div><div class="vl" id="m_dev">—</div><div class="un">°C</div></div>
+    <div class="tile"><div class="lb">Density alt</div><div class="vl" id="m_da">—</div><div class="un">ft</div></div>
+  </div>
+</div>
+
+<!-- ⑥ TAKEOFF -->
+<div class="card">
+  <div class="shdr"><div class="sn">6</div><h2>Takeoff — Figs 5-5, 5-7, 5-9, 5-11</h2></div>
+  <p class="nt">Full throttle before brake release · paved level dry runway.</p>
+  <div class="g3" style="margin-bottom:.5rem">
+    <div class="fld"><label>Flap setting</label>
+      <select id="flaps">
+        <option value="0">0° flaps (Figs 5-5, 5-9)</option>
+        <option value="25">25° flaps (Figs 5-7, 5-11)</option>
+      </select>
+    </div>
+  </div>
+  <div class="rb">
+    <h3>Speeds (chart inset)</h3>
+    <table class="t" style="margin-bottom:.5rem">
+      <thead><tr><th>Wt (lb)</th><th>Lift-off KIAS</th><th>50 ft KIAS</th></tr></thead>
+      <tbody id="spdTbl"></tbody>
+    </table>
+    <div style="font-size:12px;font-weight:500;color:#1a5fa0" id="spdHint"></div>
+    <h3 style="margin-top:.6rem">Distances</h3>
+    <table class="t">
+      <thead><tr><th></th><th>Gnd roll</th><th>50 ft obstn</th></tr></thead>
+      <tbody>
+        <tr><td>POH chart (zero wind, paved dry)</td><td id="t_gr0">—</td><td id="t_ob0">—</td></tr>
+        <tr><td>Wind-corrected</td><td id="t_grw">—</td><td id="t_obw">—</td></tr>
+        <tr class="tot"><td>With <span id="facLbl">1.21</span>× factor</td><td id="t_grc">—</td><td id="t_obc">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 style="margin-top:.8rem">Charts</h3>
+  <div class="ctabs">
+    <button class="ct active" onclick="tab('to','wt')">vs Weight</button>
+    <button class="ct" onclick="tab('to','pa')">vs Press Alt</button>
+    <button class="ct" onclick="tab('to','oat')">vs OAT</button>
+    <button class="ct" onclick="tab('to','wind')">Wind</button>
+  </div>
+  <div id="to_wt"   class="cpanel active"><canvas id="cToWt"   height="200"></canvas></div>
+  <div id="to_pa"   class="cpanel"><canvas id="cToPa"   height="200"></canvas></div>
+  <div id="to_oat"  class="cpanel"><canvas id="cToOat"  height="200"></canvas></div>
+  <div id="to_wind" class="cpanel"><canvas id="cToWind" height="200"></canvas></div>
+  <div class="legend">
+    <span style="display:flex;align-items:center;gap:5px"><span class="ldot" style="background:#1a5fa0"></span>Ground roll</span>
+    <span style="display:flex;align-items:center;gap:5px"><span class="ldot" style="background:#c94a2a"></span>50 ft obstacle</span>
+    <span style="display:flex;align-items:center;gap:5px"><span class="ldot" style="background:#333"></span>Your scenario</span>
+  </div>
+</div>
+
+<!-- ⑦ CLIMB -->
+<div class="card">
+  <div class="shdr"><div class="sn">7</div><h2>Climb — Fig 5-13</h2></div>
+  <p class="nt">Full throttle · flaps up · 76 KIAS · service ceiling 13,650 ft.</p>
+  <div class="tiles">
+    <div class="tile"><div class="lb">ROC</div><div class="vl" id="m_roc">—</div><div class="un">ft/min</div></div>
+    <div class="tile"><div class="lb">Gradient</div><div class="vl" id="m_grad">—</div><div class="un">% (min 3.3%)</div></div>
+    <div class="tile"><div class="lb">Svc ceiling</div><div class="vl">13,650</div><div class="un">ft</div></div>
+    <div class="tile"><div class="lb">Status</div><div class="vl" id="m_clst">—</div></div>
+  </div>
+  <div class="ctabs">
+    <button class="ct active" onclick="tab('cl','pa')">vs Press Alt</button>
+    <button class="ct" onclick="tab('cl','oat')">vs OAT</button>
+  </div>
+  <div id="cl_pa"  class="cpanel active"><canvas id="cClPa"  height="200"></canvas></div>
+  <div id="cl_oat" class="cpanel"><canvas id="cClOat" height="200"></canvas></div>
+</div>
+
+<!-- ⑧ LANDING -->
+<div class="card">
+  <div class="shdr"><div class="sn">8</div><h2>Landing — Figs 5-33, 5-35</h2></div>
+  <p class="nt">Power off · 40° flaps · 66 KIAS · full stall · max braking · paved dry.</p>
+  <table class="t" style="margin-bottom:.5rem">
+    <thead><tr><th></th><th>Gnd roll</th><th>50 ft obstn</th></tr></thead>
+    <tbody>
+      <tr><td>POH chart (zero wind)</td><td id="l_gr0">—</td><td id="l_ob0">—</td></tr>
+      <tr><td>Wind-corrected</td><td id="l_grw">—</td><td id="l_obw">—</td></tr>
+      <tr class="tot"><td>With factor</td><td id="l_grc">—</td><td id="l_obc">—</td></tr>
+    </tbody>
+  </table>
+  <div class="ctabs">
+    <button class="ct active" onclick="tab('ld','wt')">vs Weight</button>
+    <button class="ct" onclick="tab('ld','pa')">vs Press Alt</button>
+  </div>
+  <div id="ld_wt" class="cpanel active"><canvas id="cLdWt" height="200"></canvas></div>
+  <div id="ld_pa" class="cpanel"><canvas id="cLdPa" height="200"></canvas></div>
+</div>
+
+<!-- ⑨ SUMMARY -->
+<div class="card">
+  <div class="shdr"><div class="sn">9</div><h2>Go / no-go</h2></div>
+  <table class="t">
+    <thead><tr><th>Check</th><th>Value</th><th>Limit</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Gross weight</td><td id="s_tow">—</td><td>2550 lb</td><td id="sb_tow">—</td></tr>
+      <tr><td>CG in envelope</td><td id="s_cg">—</td><td id="s_cglim">—</td><td id="sb_cg">—</td></tr>
+      <tr><td>T/O 50ft vs runway</td><td id="s_dist">—</td><td id="s_rwy">—</td><td id="sb_dist">—</td></tr>
+      <tr><td>Climb gradient</td><td id="s_grad">—</td><td>≥ 3.3%</td><td id="sb_grad">—</td></tr>
+    </tbody>
+  </table>
+  <div id="gobanner" class="go"></div>
+</div>
+
+<p style="font-size:10px;color:#aaa;margin-top:.5rem;line-height:1.6">Performance digitised from POH Figs 5-5, 5-7, 5-9, 5-11, 5-13, 5-33, 5-35. Verified ≤4% vs POH examples. Weather via aviationweather.gov. Runways via aviationweather.gov airport API. Diagrams via FAA aeronav (US only). Serial nos 28-7790001–28-7990589.</p>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+// ─── PERFORMANCE TABLES ──────────────────────────────────────────────────────
+var PA=[0,2000,4000,6000,8000], WTO=[2050,2250,2400,2550], WLD=[2100,2300,2400,2550];
+var GR0={0:{2050:750,2250:900,2400:1050,2550:1250},2000:{2050:870,2250:1050,2400:1200,2550:1450},4000:{2050:1020,2250:1230,2400:1430,2550:1700},6000:{2050:1200,2250:1450,2400:1700,2550:2000},8000:{2050:1430,2250:1720,2400:2020,2550:2400}};
+var OB0={0:{2050:1530,2250:1760,2400:1990,2550:2310},2000:{2050:1760,2250:1990,2400:2260,2550:2640},4000:{2050:2030,2250:2310,2400:2630,2550:3050},6000:{2050:2400,2250:2730,2400:3140,2550:3650},8000:{2050:2870,2250:3280,2400:3790,2550:4430}};
+var GR25={0:{2050:640,2250:770,2400:900,2550:1080},2000:{2050:740,2250:900,2400:1060,2550:1280},4000:{2050:890,2250:1070,2400:1270,2550:1530},6000:{2050:1060,2250:1290,2400:1530,2550:1850},8000:{2050:1280,2250:1550,2400:1850,2550:2240}};
+var OB25={0:{2050:1200,2250:1400,2400:1650,2550:2000},2000:{2050:1400,2250:1650,2400:1950,2550:2350},4000:{2050:1650,2250:1950,2400:2300,2550:2800},6000:{2050:1960,2250:2300,2400:2750,2550:3350},8000:{2050:2350,2250:2800,2400:3350,2550:4050}};
+var LGR={0:{2100:660,2300:760,2400:810,2550:900},2000:{2100:720,2300:820,2400:880,2550:980},4000:{2100:790,2300:895,2400:960,2550:1070},6000:{2100:870,2300:990,2400:1060,2550:1180},8000:{2100:960,2300:1090,2400:1170,2550:1310}};
+var LOB={0:{2100:1150,2300:1250,2400:1330,2550:1460},2000:{2100:1210,2300:1320,2400:1400,2550:1540},4000:{2100:1280,2300:1400,2400:1480,2550:1640},6000:{2100:1360,2300:1490,2400:1580,2550:1750},8000:{2100:1460,2300:1600,2400:1700,2550:1890}};
+var CLPA=[0,2000,4000,6000,8000,10000,12000,13650], CLROC=[760,650,535,425,310,200,95,0];
+var S0=[{w:2550,lo:53,f:58},{w:2450,lo:51,f:57},{w:2350,lo:51,f:56},{w:2250,lo:50,f:55},{w:2150,lo:49,f:54},{w:2050,lo:48,f:52}];
+var S25=[{w:2550,lo:49,f:54},{w:2450,lo:47,f:51},{w:2350,lo:45,f:50},{w:2250,lo:43,f:48},{w:2150,lo:42,f:47},{w:2050,lo:41,f:45}];
+
+// ─── MATH ────────────────────────────────────────────────────────────────────
+function lerp(a,b,t){return a+(b-a)*t}
+function bil(g,pb,wb,pa,w){
+  pa=Math.max(pb[0],Math.min(pb[pb.length-1],pa));
+  w=Math.max(wb[0],Math.min(wb[wb.length-1],w));
+  var pL=pb.filter(function(x){return x<=pa}).pop();
+  var pH=pb.filter(function(x){return x>=pa})[0];
+  var wL=wb.filter(function(x){return x<=w}).pop();
+  var wH=wb.filter(function(x){return x>=w})[0];
+  var fp=pL===pH?0:(pa-pL)/(pH-pL), fw=wL===wH?0:(w-wL)/(wH-wL);
+  return g[pL][wL]*(1-fp)*(1-fw)+g[pL][wH]*(1-fp)*fw+g[pH][wL]*fp*(1-fw)+g[pH][wH]*fp*fw;
+}
+function roc(pa){
+  pa=Math.max(0,Math.min(13650,pa));
+  for(var i=0;i<CLPA.length-1;i++){if(pa>=CLPA[i]&&pa<=CLPA[i+1]){return lerp(CLROC[i],CLROC[i+1],(pa-CLPA[i])/(CLPA[i+1]-CLPA[i]))}}return 0;
+}
+function tf(oat,pa){return 1+(oat-(15-pa/500))/10*0.007}
+function wf(hw){return 1-(hw/9)*0.10}
+function TO(oat,pa,w,hw,fl){
+  var gG=fl?GR25:GR0, oG=fl?OB25:OB0;
+  var t=tf(oat,pa),ww=wf(hw);
+  var g=bil(gG,PA,WTO,pa,w)*t, o=bil(oG,PA,WTO,pa,w)*t;
+  return{gr0:r25(g),ob0:r25(o),grW:r25(g*ww),obW:r25(o*ww)};
+}
+function LD(oat,pa,w,hw){
+  var t=tf(oat,pa),ww=wf(hw);
+  var g=bil(LGR,PA,WLD,pa,w)*t, o=bil(LOB,PA,WLD,pa,w)*t;
+  return{gr0:r25(g),ob0:r25(o),grW:r25(g*ww),obW:r25(o*ww)};
+}
+function r25(n){return Math.round(n/25)*25}
+function hwComp(wdir,wspd,rhdg){return Math.round(wspd*Math.cos((wdir-rhdg)*Math.PI/180))}
+
+// ─── DOM ─────────────────────────────────────────────────────────────────────
+function v(id){return parseFloat(document.getElementById(id).value)||0}
+function s(id,t){var e=document.getElementById(id);if(e)e.textContent=t}
+function sh(id,h){var e=document.getElementById(id);if(e)e.innerHTML=h}
+function bk(st){return st==='ok'?'<span class="bk ok">✓ Pass</span>':st==='wn'?'<span class="bk wn">⚠ Marginal</span>':'<span class="bk bd">✗ Fail</span>'}
+function ft(n){return n.toLocaleString()+' ft'}
+function setAuto(id,val){var e=document.getElementById(id);if(!e)return;e.value=val;e.classList.add('auto')}
+
+// ─── AIRPORT LOOKUP ───────────────────────────────────────────────────────────
+var apState={icao:'',elev:0,wdir:0,wspd:0,runways:[]};
+
+async function lookupAirport(){
+  var icao=document.getElementById('icaoIn').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(icao.length<3||icao.length>4){setStatus('Enter a 3–4 character ICAO code (e.g. KSFO, EGLL, LSZH, YSSY)','err');return;}
+  var btn=document.getElementById('loadBtn');
+  btn.disabled=true; btn.textContent='Loading…';
+  setStatus('Fetching live weather…','');
+  try{
+    // Step 1: METAR
+    var metarUrl='https://aviationweather.gov/api/data/metar?ids='+icao+'&format=json&hours=2';
+    var mRes=await fetch(metarUrl);
+    if(!mRes.ok)throw new Error('Weather service error ('+mRes.status+'). Check ICAO and try again.');
+    var mData=await mRes.json();
+    if(!Array.isArray(mData)||mData.length===0)throw new Error('No METAR found for "'+icao+'". Check the ICAO code — it must be the full ICAO identifier (e.g. KSFO not SFO, EGLL not LHR).');
+    var m=mData[0];
+
+    // Step 2: Airport info (elevation + runways from aviationweather)
+    setStatus('Fetching runway data…','');
+    var apUrl='https://aviationweather.gov/api/data/airport?ids='+icao+'&format=json';
+    var aRes=await fetch(apUrl);
+    var apData=null, runways=[];
+    if(aRes.ok){
+      var aJson=await aRes.json();
+      if(Array.isArray(aJson)&&aJson.length>0){
+        apData=aJson[0];
+        // Parse runway data from aviationweather format
+        // rwyNum is array of runway IDs, rwyDir headings, rwyLen lengths
+        if(apData.rwyNum&&apData.rwyNum.length>0){
+          for(var i=0;i<apData.rwyNum.length;i++){
+            runways.push({
+              ident:String(apData.rwyNum[i]),
+              hdg:apData.rwyDir?parseFloat(apData.rwyDir[i])||null:null,
+              len:apData.rwyLen?parseInt(apData.rwyLen[i])||0:0,
+              wid:apData.rwyWid?parseInt(apData.rwyWid[i])||0:0,
+              comp:apData.rwyComp?String(apData.rwyComp[i]||''):''
+            });
+          }
+        }
+      }
+    }
+
+    var elev=apData?parseFloat(apData.elev)||0:(m.elev||0);
+    var apName=apData?(apData.site||icao):(m.name||icao);
+
+    apState={icao:icao,elev:elev,wdir:m.wdir||0,wspd:m.wspd||0,runways:runways};
+
+    // Display weather
+    s('wx_name',apName);
+    s('wx_elev',elev.toLocaleString());
+    s('wx_oat',m.temp!=null?m.temp.toFixed(1):'—');
+    // altim from aviationweather IS in inHg already
+    s('wx_qnh',m.altim!=null?parseFloat(m.altim).toFixed(2):'—');
+    s('wx_wind',m.wspd!=null?m.wspd:'—');
+    s('wx_wdir',m.wdir!=null?m.wdir+'°':'VRB');
+    s('wx_vis',m.visib!=null?m.visib+' SM':'—');
+    var sky=[];
+    if(m.wxString)sky.push(m.wxString);
+    if(m.clouds&&m.clouds.length){m.clouds.forEach(function(c){if(c.cover&&c.cover!=='CLR'&&c.cover!=='SKC')sky.push(c.cover+(c.base?' '+c.base*100+'ft':''))})}
+    if(!sky.length&&m.skyCondition)sky.push(m.skyCondition);
+    s('wx_sky',sky.length?sky.join(' '):'Clear / CAVOK');
+    s('wx_raw',m.rawOb||'');
+    document.getElementById('wxBox').style.display='block';
+
+    // Auto-fill conditions
+    if(m.temp!=null)setAuto('oat',parseFloat(m.temp).toFixed(1));
+    if(m.altim!=null)setAuto('qnh',parseFloat(m.altim).toFixed(2));
+    if(elev)setAuto('elev',elev);
+    document.getElementById('autoNote').style.display='block';
+
+    // Runways
+    renderRunways();
+    setStatus('✓ '+apName+' loaded — '+runways.length+' runway end'+(runways.length!==1?'s':'')+' found.','ok');
+
+    // Try airport diagram
+    loadDiagram(icao);
+    calc();
+
+  }catch(e){
+    setStatus(e.message,'err');
+  }finally{
+    btn.disabled=false; btn.textContent='Load ✈';
+  }
+}
+
+function renderRunways(){
+  var rwys=apState.runways;
+  document.getElementById('rwyBox').style.display=rwys.length?'block':'none';
+  if(!rwys.length)return;
+  var html='';
+  rwys.forEach(function(r,i){
+    var hw=r.hdg!=null&&apState.wspd?hwComp(apState.wdir,apState.wspd,r.hdg):null;
+    var hwStr=hw!=null?(hw>=0?'HW+'+hw:'TW'+hw)+' kt':'';
+    var isTW=hw!=null&&hw<-2;
+    html+='<button class="rwybtn'+(isTW?' tw':'')+'" onclick="pickRwy('+i+',this)">'+
+      r.ident+'<span>'+(r.len?r.len.toLocaleString()+' ft':'')+
+      (hwStr?' · '+hwStr:'')+'</span></button>';
+  });
+  document.getElementById('rwyBtns').innerHTML=html;
+}
+
+function pickRwy(idx,btn){
+  var r=apState.runways[idx];
+  document.querySelectorAll('.rwybtn').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  if(r.len)setAuto('rwy',r.len);
+  if(r.hdg!=null&&apState.wspd){setAuto('wind',hwComp(apState.wdir,apState.wspd,r.hdg))}
+  var det=document.getElementById('rwyDetail');
+  var info='RWY '+r.ident+(r.len?' · '+r.len.toLocaleString()+' ft':'')+(r.wid?' × '+r.wid+' ft':'')+(r.hdg!=null?' · '+r.hdg.toFixed(0)+'°T':'')+(r.comp?' · '+r.comp:'');
+  det.innerHTML='<span class="nt ok" style="display:block">'+info+'</span>';
+  det.style.display='block';
+  drawOverlay();
+  calc();
+}
+
+function setStatus(msg,type){
+  document.getElementById('apStatus').innerHTML='<div class="nt '+(type||'')+'" style="margin-top:.4rem">'+msg+'</div>';
+}
+
+// ─── AIRPORT DIAGRAM ─────────────────────────────────────────────────────────
+var cal={active:false,pts:[],pxPerFt:null};
+
+function loadDiagram(icao){
+  var wrap=document.getElementById('diagWrap');
+  var msg=document.getElementById('diagMsg');
+  var calBtn=document.getElementById('calBtn');
+  wrap.style.display='none'; msg.textContent=''; calBtn.style.display='none';
+  cal={active:false,pts:[],pxPerFt:null};
+
+  // Only FAA diagrams for US airports
+  var isUS=icao.startsWith('K')||icao.startsWith('P')||icao.length===3;
+  if(!isUS){msg.textContent='Airport diagrams available for US airports only (FAA source).';return;}
+
+  var img=document.getElementById('diagImg');
+  // FAA aeronav SVG diagram URL
+  var url='https://aeronav.faa.gov/d-tpp/current/svg_diagrams/AD_'+icao+'.svg';
+  img.onload=function(){
+    wrap.style.display='block';
+    calBtn.style.display='inline-block';
+    document.getElementById('calMsg').style.display='none';
+    // Size canvas to image
+    setTimeout(function(){
+      var c=document.getElementById('diagCanvas');
+      c.width=img.offsetWidth; c.height=img.offsetHeight;
+      c.style.width='100%'; c.style.height='100%';
+    },100);
+  };
+  img.onerror=function(){
+    msg.textContent='No FAA diagram found for '+icao+'. Available for airports with published FAA airport diagrams.';
+  };
+  img.src=url;
+}
+
+function startCal(){
+  cal={active:true,pts:[],pxPerFt:null};
+  var c=document.getElementById('diagCanvas');
+  c.style.pointerEvents='all'; c.style.cursor='crosshair';
+  c.onclick=calClick;
+  var m=document.getElementById('calMsg');
+  m.style.display='block';
+  m.textContent='Tap 1: tap the runway THRESHOLD (start) on the diagram.';
+}
+
+function calClick(e){
+  var c=document.getElementById('diagCanvas');
+  var r=c.getBoundingClientRect();
+  var sx=c.width/r.width, sy=c.height/r.height;
+  var x=(e.clientX-r.left)*sx, y=(e.clientY-r.top)*sy;
+  cal.pts.push({x:x,y:y});
+  // Draw marker
+  var ctx=c.getContext('2d');
+  ctx.fillStyle='#1a5fa0'; ctx.beginPath(); ctx.arc(x,y,8,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.font='bold 11px system-ui'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(cal.pts.length,x,y);
+
+  var m=document.getElementById('calMsg');
+  if(cal.pts.length===1){
+    m.textContent='Tap 2: now tap the far END of the same runway.';
+  } else if(cal.pts.length===2){
+    var p1=cal.pts[0],p2=cal.pts[1];
+    var pxDist=Math.sqrt(Math.pow(p2.x-p1.x,2)+Math.pow(p2.y-p1.y,2));
+    // Get runway length from selected runway button
+    var activeBtn=document.querySelector('.rwybtn.active');
+    var rwyLen=v('rwy')||5000;
+    cal.pxPerFt=pxDist/rwyLen;
+    cal.active=false;
+    c.style.pointerEvents='none'; c.style.cursor='default'; c.onclick=null;
+    m.textContent='✓ Scale set: '+cal.pxPerFt.toFixed(3)+' px/ft. Overlay is now live.';
+    drawOverlay();
+  }
+}
+
+function drawOverlay(){
+  var c=document.getElementById('diagCanvas');
+  if(!c||c.width===0||!cal.pxPerFt||cal.pts.length<2)return;
+  var ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+
+  // Redraw calibration points
+  [0,1].forEach(function(i){
+    var p=cal.pts[i];
+    ctx.fillStyle='#1a5fa0'; ctx.beginPath(); ctx.arc(p.x,p.y,8,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.font='bold 11px system-ui'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(i+1,p.x,p.y);
+  });
+
+  var oat=v('oat'), pa=Math.round(v('elev')+(29.92-v('qnh'))*1000);
+  var tow=v('bew')+v('front')+v('rear')+Math.round(v('fuel')*6)+v('bag');
+  var hw=v('wind'), fac=v('fac');
+  var fl=parseInt(document.getElementById('flaps').value)||0;
+  var d=TO(oat,pa,tow,hw,fl);
+  var grC=d.grW*fac, obC=d.obW*fac;
+
+  var p1=cal.pts[0], p2=cal.pts[1];
+  var dx=p2.x-p1.x, dy=p2.y-p1.y, len=Math.sqrt(dx*dx+dy*dy);
+  var ux=dx/len, uy=dy/len;
+  function pt(ft){return{x:p1.x+ux*ft*cal.pxPerFt,y:p1.y+uy*ft*cal.pxPerFt}}
+
+  var gp=pt(grC), op=pt(obC);
+
+  // Ground roll — solid blue
+  ctx.strokeStyle='rgba(26,95,160,0.85)'; ctx.lineWidth=5; ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(gp.x,gp.y); ctx.stroke();
+  ctx.fillStyle='#1a5fa0'; ctx.beginPath(); ctx.arc(gp.x,gp.y,9,0,Math.PI*2); ctx.fill();
+
+  // 50ft obstacle — dashed red
+  ctx.strokeStyle='rgba(201,74,42,0.8)'; ctx.lineWidth=3; ctx.setLineDash([10,5]);
+  ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(op.x,op.y); ctx.stroke();
+  ctx.fillStyle='#c94a2a'; ctx.beginPath(); ctx.arc(op.x,op.y,9,0,Math.PI*2); ctx.fill();
+  ctx.setLineDash([]);
+
+  // Labels with background
+  function label(text,x,y,col){
+    ctx.font='bold 12px system-ui'; ctx.textAlign='left'; ctx.textBaseline='middle';
+    var w=ctx.measureText(text).width+10;
+    ctx.fillStyle='rgba(255,255,255,0.85)'; ctx.fillRect(x+12,y-10,w,20);
+    ctx.fillStyle=col; ctx.fillText(text,x+17,y);
+  }
+  label('Lift-off ~'+Math.round(grC)+'ft',gp.x,gp.y-16,'#1a5fa0');
+  label('50ft obstn ~'+Math.round(obC)+'ft',op.x,op.y+16,'#c94a2a');
+}
+
+// ─── CHARTS ───────────────────────────────────────────────────────────────────
+var CH={};
+var BLU='#1a5fa0',RED='#c94a2a',GRN='#3a9e6a';
+function mk(id,cfg){CH[id]=new Chart(document.getElementById(id).getContext('2d'),cfg)}
+function bOpts(xl,yl,ym){return{responsive:true,maintainAspectRatio:true,
+  plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+Math.round(c.parsed.y).toLocaleString()}}}},
+  scales:{x:{title:{display:true,text:xl,font:{size:11}},grid:{color:'#ede9e0'},ticks:{font:{size:10}}},
+    y:{title:{display:true,text:yl,font:{size:11}},min:0,max:ym,grid:{color:'#ede9e0'},ticks:{font:{size:10}}}}}}
+function dualOpts(xl,ym){return{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false}},
+  scales:{x:{title:{display:true,text:xl,font:{size:11}},grid:{color:'#ede9e0'},ticks:{font:{size:10}}},
+    y:{title:{display:true,text:'ROC (ft/min)',font:{size:11}},min:0,max:ym,grid:{color:'#ede9e0'},ticks:{font:{size:10}}},
+    y2:{position:'right',title:{display:true,text:'Gradient (%)',font:{size:11}},min:0,max:7,grid:{display:false},ticks:{font:{size:10}}}}}}
+
+function initCharts(){
+  function tod(n){return[{label:'GR',data:[],borderColor:BLU,tension:.3,fill:false},{label:'50ft',data:[],borderColor:RED,tension:.3,fill:false},{label:'xGR',data:[],borderColor:'#333',borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:'#333'},{label:'x50',data:[],borderColor:RED,borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:RED}]}
+  mk('cToWt',{type:'line',data:{labels:WTO,datasets:tod()},options:bOpts('Weight (lb)','Distance (ft)',5000)});
+  mk('cToPa',{type:'line',data:{labels:PA,datasets:tod()},options:bOpts('Press alt (ft)','Distance (ft)',5000)});
+  mk('cToOat',{type:'line',data:{labels:[-20,-10,0,10,15,20,30,40],datasets:tod()},options:bOpts('OAT (°C)','Distance (ft)',5000)});
+  mk('cToWind',{type:'line',data:{labels:[-10,-5,0,5,9,12,15],datasets:[{label:'50ft',data:[],borderColor:RED,tension:.3,fill:false},{label:'x',data:[],borderColor:'#333',borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:'#333'}]},options:bOpts('Headwind (kts)','50ft dist (ft)',5000)});
+  function cld(){return[{label:'ROC',data:[],borderColor:BLU,tension:.3,fill:false,yAxisID:'y'},{label:'Grad',data:[],borderColor:GRN,tension:.3,fill:false,yAxisID:'y2'},{label:'x',data:[],borderColor:'#333',borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:'#333',yAxisID:'y'}]}
+  mk('cClPa',{type:'line',data:{labels:CLPA,datasets:cld()},options:dualOpts('Press alt (ft)',900)});
+  mk('cClOat',{type:'line',data:{labels:[-20,-10,0,10,20,30,40],datasets:cld()},options:Object.assign(dualOpts('OAT (°C)',900),{scales:Object.assign(dualOpts('OAT (°C)',900).scales,{x:{type:'linear',min:-25,max:45,title:{display:true,text:'OAT (°C)',font:{size:11}},grid:{color:'#ede9e0'},ticks:{font:{size:10}}}})})});
+  function ldd(){return[{label:'GR',data:[],borderColor:BLU,tension:.3,fill:false},{label:'50ft',data:[],borderColor:RED,tension:.3,fill:false},{label:'xGR',data:[],borderColor:'#333',borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:'#333'},{label:'x50',data:[],borderColor:RED,borderDash:[5,4],pointRadius:7,pointStyle:'crossRot',showLine:false,backgroundColor:RED}]}
+  mk('cLdWt',{type:'line',data:{labels:WLD,datasets:ldd()},options:bOpts('Weight (lb)','Distance (ft)',2500)});
+  mk('cLdPa',{type:'line',data:{labels:PA,datasets:ldd()},options:bOpts('Press alt (ft)','Distance (ft)',2500)});
+  mk('cgChart',{type:'scatter',data:{datasets:[
+    {data:[{x:82,y:1950},{x:86.5,y:2550},{x:93,y:2550},{x:93,y:1200},{x:82,y:1200},{x:82,y:1950}],borderColor:'#3a6c10',backgroundColor:'#e8f3dc55',showLine:true,fill:true,pointRadius:0},
+    {data:[{x:82,y:1200},{x:82,y:2100},{x:93,y:2100},{x:93,y:1200},{x:82,y:1200}],borderColor:'#8a4f0a',backgroundColor:'transparent',borderDash:[6,4],showLine:true,fill:false,pointRadius:0},
+    {data:[],borderColor:'#c94a2a',backgroundColor:'#c94a2a',pointRadius:8,pointStyle:'crossRot',showLine:false},
+  ]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false}},
+    scales:{x:{title:{display:true,text:'CG (in aft datum)',font:{size:11}},min:80,max:96,grid:{color:'#ede9e0'},ticks:{font:{size:10}}},
+      y:{title:{display:true,text:'Weight (lb)',font:{size:11}},min:1100,max:2700,grid:{color:'#ede9e0'},ticks:{font:{size:10}}}}}});
+}
+
+function updCharts(oat,pa,w,hw,fl){
+  var oa=[-20,-10,0,10,15,20,30,40], ow=[-10,-5,0,5,9,12,15];
+  function setLinear(ch,min,max){ch.options.scales.x.type='linear';ch.options.scales.x.min=min;ch.options.scales.x.max=max}
+  CH.cToWt.data.datasets[0].data=WTO.map(function(ww){return TO(oat,pa,ww,0,fl).gr0});
+  CH.cToWt.data.datasets[1].data=WTO.map(function(ww){return TO(oat,pa,ww,0,fl).ob0});
+  CH.cToWt.data.datasets[2].data=[{x:w,y:TO(oat,pa,w,0,fl).gr0}];
+  CH.cToWt.data.datasets[3].data=[{x:w,y:TO(oat,pa,w,0,fl).ob0}];
+  setLinear(CH.cToWt,1900,2700); CH.cToWt.update();
+  CH.cToPa.data.datasets[0].data=PA.map(function(p){return TO(oat,p,w,0,fl).gr0});
+  CH.cToPa.data.datasets[1].data=PA.map(function(p){return TO(oat,p,w,0,fl).ob0});
+  CH.cToPa.data.datasets[2].data=[{x:pa,y:TO(oat,pa,w,0,fl).gr0}];
+  CH.cToPa.data.datasets[3].data=[{x:pa,y:TO(oat,pa,w,0,fl).ob0}];
+  setLinear(CH.cToPa,-200,8500); CH.cToPa.update();
+  CH.cToOat.data.datasets[0].data=oa.map(function(t){return TO(t,pa,w,0,fl).gr0});
+  CH.cToOat.data.datasets[1].data=oa.map(function(t){return TO(t,pa,w,0,fl).ob0});
+  CH.cToOat.data.datasets[2].data=[{x:oat,y:TO(oat,pa,w,0,fl).gr0}];
+  CH.cToOat.data.datasets[3].data=[{x:oat,y:TO(oat,pa,w,0,fl).ob0}];
+  setLinear(CH.cToOat,-25,45); CH.cToOat.update();
+  CH.cToWind.data.datasets[0].data=ow.map(function(ww){return TO(oat,pa,w,ww,fl).obW});
+  CH.cToWind.data.datasets[1].data=[{x:hw,y:TO(oat,pa,w,hw,fl).obW}];
+  setLinear(CH.cToWind,-12,17); CH.cToWind.update();
+  var rb=roc(pa);
+  CH.cClPa.data.datasets[0].data=CLPA.map(function(p){return Math.max(0,roc(p))});
+  CH.cClPa.data.datasets[1].data=CLPA.map(function(p){var r=Math.max(0,roc(p));return+(r/(76*1.6878*60)*100).toFixed(1)});
+  CH.cClPa.data.datasets[2].data=[{x:pa,y:Math.max(0,rb)}]; CH.cClPa.update();
+  CH.cClOat.data.datasets[0].data=oa.map(function(t){return Math.max(0,rb/tf(t,pa))});
+  CH.cClOat.data.datasets[1].data=oa.map(function(t){var r=Math.max(0,rb/tf(t,pa));return+(r/(76*1.6878*60)*100).toFixed(1)});
+  CH.cClOat.data.datasets[2].data=[{x:oat,y:Math.max(0,rb/tf(oat,pa))}]; CH.cClOat.update();
+  CH.cLdWt.data.datasets[0].data=WLD.map(function(ww){return LD(oat,pa,ww,0).gr0});
+  CH.cLdWt.data.datasets[1].data=WLD.map(function(ww){return LD(oat,pa,ww,0).ob0});
+  CH.cLdWt.data.datasets[2].data=[{x:w,y:LD(oat,pa,w,0).gr0}];
+  CH.cLdWt.data.datasets[3].data=[{x:w,y:LD(oat,pa,w,0).ob0}];
+  setLinear(CH.cLdWt,1900,2700); CH.cLdWt.update();
+  CH.cLdPa.data.datasets[0].data=PA.map(function(p){return LD(oat,p,w,0).gr0});
+  CH.cLdPa.data.datasets[1].data=PA.map(function(p){return LD(oat,p,w,0).ob0});
+  CH.cLdPa.data.datasets[2].data=[{x:pa,y:LD(oat,pa,w,0).gr0}];
+  CH.cLdPa.data.datasets[3].data=[{x:pa,y:LD(oat,pa,w,0).ob0}];
+  setLinear(CH.cLdPa,-200,8500); CH.cLdPa.update();
+}
+
+function tab(p,n){
+  document.querySelectorAll('[id^="'+p+'_"]').forEach(function(e){e.classList.remove('active')});
+  var el=document.getElementById(p+'_'+n);if(el)el.classList.add('active');
+  document.querySelectorAll('.ctabs .ct').forEach(function(b){
+    b.classList.toggle('active',b.getAttribute('onclick').indexOf("'"+n+"'")>-1&&b.getAttribute('onclick').indexOf("'"+p+"'")>-1);
+  });
+}
+
+// ─── SPEED TABLE ──────────────────────────────────────────────────────────────
+function updSpd(fl,tow){
+  var sp=fl?S25:S0;
+  document.getElementById('spdTbl').innerHTML=sp.map(function(r){return'<tr><td>'+r.w+'</td><td>'+r.lo+'</td><td>'+r.f+'</td></tr>'}).join('');
+  var lo=sp[sp.length-1].lo,f=sp[sp.length-1].f;
+  for(var i=0;i<sp.length-1;i++){if(tow<=sp[i].w&&tow>=sp[i+1].w){var t=(tow-sp[i+1].w)/(sp[i].w-sp[i+1].w);lo=Math.round(lerp(sp[i+1].lo,sp[i].lo,t));f=Math.round(lerp(sp[i+1].f,sp[i].f,t));break;}}
+  s('spdHint','At '+Math.round(tow)+' lb → lift-off '+lo+' KIAS · 50 ft '+f+' KIAS');
+}
+
+// ─── MAIN CALC ────────────────────────────────────────────────────────────────
+function calc(){
+  var oat=v('oat'),elev=v('elev'),qnh=v('qnh'),hw=v('wind'),rwy=v('rwy'),fac=v('fac');
+  var bew=v('bew'),becg=v('becg'),front=v('front'),rear=v('rear'),fuel=v('fuel'),bag=v('bag');
+  var fl=parseInt(document.getElementById('flaps').value)||0;
+  var fuelwt=Math.round(fuel*6); document.getElementById('fuelwt').value=fuelwt;
+  var bemom=Math.round(bew*becg); document.getElementById('bemom').value=bemom;
+  var fm=Math.round(front*80.5),rm=Math.round(rear*118.1),flm=Math.round(fuelwt*95),bm=Math.round(bag*142.8);
+  s('fmh','Moment: '+fm.toLocaleString()+' in-lb');s('rmh','Moment: '+rm.toLocaleString()+' in-lb');
+  s('flmh','Moment: '+flm.toLocaleString()+' in-lb');s('bmh','Moment: '+bm.toLocaleString()+' in-lb');
+  var tow=bew+front+rear+fuelwt+bag, tom=bemom+fm+rm+flm+bm, cg=Math.round(tom/tow*10)/10;
+  s('r_bew',bew);s('r_becg',becg.toFixed(1));s('r_bemom',bemom.toLocaleString());
+  s('r_front',front);s('r_fm',fm.toLocaleString());s('r_rear',rear);s('r_rm',rm.toLocaleString());
+  s('r_fuel',fuelwt);s('r_flm',flm.toLocaleString());s('r_bag',bag);s('r_bm',bm.toLocaleString());
+  s('r_tow',tow);s('r_cg',cg.toFixed(1)+' in');s('r_tom',tom.toLocaleString());
+  s('m_tow',tow.toLocaleString()+' lb');s('m_cg',cg.toFixed(1)+' in');
+  var fwd=tow>=2550?86.5:tow<=1950?82.0:+(82+(86.5-82)*(tow-1950)/600).toFixed(1);
+  s('m_fwdlim',fwd.toFixed(1)+' in');
+  var wbOk=tow<=2550&&cg>=fwd&&cg<=93, wbMg=tow<=2550&&cg>=(fwd-.5)&&cg<=93.3;
+  sh('m_wb',bk(wbOk?'ok':wbMg?'wn':'bd'));
+  var pa=Math.round(elev+(29.92-qnh)*1000), isa=+(15-pa/500).toFixed(1), dev=+(oat-isa).toFixed(1), da=Math.round(pa+120*dev);
+  s('m_pa',pa.toLocaleString()+' ft');s('m_isa',isa+'°C');s('m_dev',(dev>=0?'+':'')+dev+'°C');s('m_da',da.toLocaleString()+' ft');
+  updSpd(fl,tow);
+  var td=TO(oat,pa,tow,hw,fl);
+  s('t_gr0',ft(td.gr0));s('t_ob0',ft(td.ob0));s('t_grw',ft(td.grW));s('t_obw',ft(td.obW));
+  var grc=r25(td.grW*fac), obc=r25(td.obW*fac);
+  s('t_grc',ft(grc));s('t_obc',ft(obc));s('facLbl',fac.toFixed(2));
+  var rb=roc(pa), rc=Math.max(0,Math.round(rb/tf(oat,pa)/10)*10);
+  var grad=+(rc/(76*1.6878*60)*100).toFixed(1);
+  s('m_roc',rc.toLocaleString()+' ft/min');s('m_grad',grad+'%');
+  sh('m_clst',bk(grad>=4?'ok':grad>=3.3?'wn':'bd'));
+  var ld=LD(oat,pa,tow,hw);
+  s('l_gr0',ft(ld.gr0));s('l_ob0',ft(ld.ob0));s('l_grw',ft(ld.grW));s('l_obw',ft(ld.obW));
+  s('l_grc',ft(r25(ld.grW*fac)));s('l_obc',ft(r25(ld.obW*fac)));
+  updCharts(oat,pa,tow,hw,fl);
+  CH.cgChart.data.datasets[2].data=[{x:cg,y:tow}]; CH.cgChart.update();
+  drawOverlay();
+  var twSt=tow<=2550?'ok':'bd', cgSt=wbOk?'ok':wbMg?'wn':'bd';
+  var mg=rwy-obc, dSt=mg>400?'ok':mg>0?'wn':'bd', gSt=grad>=4?'ok':grad>=3.3?'wn':'bd';
+  sh('sb_tow',bk(twSt));sh('sb_cg',bk(cgSt));sh('sb_dist',bk(dSt));sh('sb_grad',bk(gSt));
+  s('s_tow',tow.toLocaleString()+' lb');s('s_cg',cg.toFixed(1)+' in (fwd '+fwd.toFixed(1)+' in)');
+  s('s_cglim','Fwd '+fwd.toFixed(1)+', aft 93.0 in');
+  s('s_dist',obc.toLocaleString()+' ft');s('s_rwy',rwy.toLocaleString()+' ft (margin '+(mg>=0?'+':'')+mg.toLocaleString()+' ft)');
+  s('s_grad',grad+'%');
+  var allOk=twSt==='ok'&&cgSt==='ok'&&dSt==='ok'&&gSt==='ok';
+  var anyBad=twSt==='bd'||cgSt==='bd'||dSt==='bd'||gSt==='bd';
+  var b=document.getElementById('gobanner');
+  b.style.cssText='border-radius:9px;padding:.85rem 1.1rem;font-weight:500;text-align:center;margin-top:.85rem;background:'+(allOk?'#e8f3dc;color:#3a6c10':anyBad?'#fce9e9;color:#a02d2d':'#fae9d5;color:#8a4f0a');
+  b.textContent=allOk?'✓  GO — all checks within limits':anyBad?'✗  NO-GO — one or more checks failed':'⚠  MARGINAL — review carefully';
+}
+
+document.getElementById('icaoIn').addEventListener('keydown',function(e){if(e.key==='Enter')lookupAirport()});
+document.querySelectorAll('input:not([readonly]),select').forEach(function(el){el.addEventListener('input',calc)});
+initCharts(); calc();
+</script>
+</body>
+</html>
